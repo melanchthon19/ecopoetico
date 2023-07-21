@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% block header %} {% include 'header.html' %} {% endblock header %}
+
+<div class="container">
+    <div class="row">
+        <div class=" col-md-8 col-md-10 mx-auto">
+            <div class="site-heading">
+                <h3 class="site-heading my-4 mt-3 text-muted">Me interné en el bosque de secoyas</h3>
+                <p class="mt-4 text-muted">de ahí en más me perdí en el silencio</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <!-- <div class="col-md-8 mt-3 left"> -->
+            {% for poem in poem_list %}                
+                    <div class="col-md-4 mt-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h2 class="card-title">{{ poem.title }}</h2>
+                                <p class="card-text text-muted h6">{{ poem.author }}</p>
+                                <p class="card-text">{{poem.content|linebreaks|slice:":200"|safe }}</p>
+                                <a href="{% url 'poem_detail' slug=poem.slug  %}" class="btn btn-primary">Read More &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+    </div>
+</div>
+{%endblock%}
