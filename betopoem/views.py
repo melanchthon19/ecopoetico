@@ -17,3 +17,6 @@ class PoemDetail(generic.DetailView):
     model = Poem
     template_name = 'poem_detail.html'
     context_object_name = 'poem'
+
+class ReactTemplateView(generic.TemplateView):
+    template_name = 'dist/index.html'  # Replace 'your_react_template.html' with the path to your React index.html
