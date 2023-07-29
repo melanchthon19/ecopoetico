@@ -4,6 +4,7 @@ import './App.css';
 import { CssBaseline } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
+import Navbar from './components/Navbar';
 
 const theme = createTheme({
   typography: {
@@ -25,6 +26,7 @@ function App() {
     <CssBaseline>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+        <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>
