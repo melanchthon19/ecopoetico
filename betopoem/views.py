@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from .models import Poem
 from .serializers import PoemSerializer
+from rest_framework import views
 
 
 def home(request):
@@ -22,7 +23,7 @@ class PoemDetail(generic.DetailView):
 class ReactTemplateView(generic.TemplateView):
     template_name = 'dist/index.html'  # Replace 'your_react_template.html' with the path to your React index.html
 
-class PoemsList(APIView):
+class PoemsList(views.APIView):
     def get(self, request):
         random_param = request.query_params.get('random')
 
@@ -32,4 +33,4 @@ class PoemsList(APIView):
             poems = Poem.objects.order_by('title').all()
 
         serializer = PoemSerializer(poems, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return views.Response(serializer.data, status=views.status.HTTP_200_OK)
