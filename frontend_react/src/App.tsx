@@ -38,7 +38,7 @@ function App() {
         <BrowserRouter>
         <Navbar />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/react_test" element={<Home />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
