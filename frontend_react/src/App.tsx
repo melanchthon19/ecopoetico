@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/assets/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import './App.css';
+import './fonts.css';
+import { CssBaseline } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@emotion/react';
+import Navbar from './components/Navbar';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Roboto,sans-serif',
+  },
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#eeeeee',
+    },
+    secondary: {
+      main: '#ff4081',
+    },
+  },
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: '16px', // Set the desired font size
+        },
+      },
+    },
+  },
+});
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <CssBaseline>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+        <Navbar />
+          <Routes>
+            <Route path="/react_test" element={<Home />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </CssBaseline>
+  );
 }
 
-export default App
+export default App;
