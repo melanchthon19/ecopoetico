@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import './App.css';
+import './fonts.css';
 import { CssBaseline } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
@@ -17,6 +18,15 @@ const theme = createTheme({
     },
     secondary: {
       main: '#ff4081',
+    },
+  },
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: '16px', // Set the desired font size
+        },
+      },
     },
   },
 });
