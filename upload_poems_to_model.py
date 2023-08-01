@@ -4,7 +4,7 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecopoetico.settings')
 application = get_wsgi_application()
 #settings.configure(DEBUG=False)
-from betopoem.models import Poem
+from betopoem.models import PoemSubCorpus
 
 import unidecode
 
@@ -17,11 +17,24 @@ def create_instances_from_files(author):
                 content = file.read()
                 title = filename[:-4]
                 slug = unidecode.unidecode('-'.join([author, title.replace(' ', '-')]).lower())
-                if not Poem.objects.filter(slug=slug).exists():
-                    instance = Poem(slug=slug, title=title, author=author.title().replace('-', ' '), content=content)
+                if not PoemSubCorpus.objects.filter(slug=slug).exists():
+                    instance = PoemSubCorpus(slug=slug, title=title, author=author.title().replace('-', ' '), content=content)
                     instance.save()
 
-create_instances_from_files('mario-benedetti')
-create_instances_from_files('vicente-huidobro')
-create_instances_from_files('jaime-sabines')
-create_instances_from_files('tirso-de-molina')
+authors = ['alejandra-pizarnik',
+           'alfonsina-storni', 
+           'alfonso-reyes', 
+           'catulo', 
+           'cesar-vallejo', 
+           'emily-dickinson',
+           'mario-benedetti',
+           'vicente-huidobro',
+           'jaime-sabines',
+           'tirso-de-molina',
+]
+
+if __name__ == '__main__':
+    # subcorpus
+    for author in authors:
+        create_instances_from_files(author)
+             

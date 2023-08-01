@@ -1,22 +1,23 @@
 from django.shortcuts import render
 from django.views import generic
-from .models import Poem
-from .serializers import PoemSerializer
+from .models import Poem, PoemSubCorpus
+from .serializers import PoemSerializer, PoemSubCorpusSerializer
 from rest_framework import views
 
+import re
 
 def home(request):
-    poems = Poem.objects.order_by('?').all()
+    poems = PoemSubCorpus.objects.order_by('?').all()
     return render(request, 'home.html', context={'poem_list': poems})
 
 class PostList(generic.ListView):
-    model = Poem
+    model = PoemSubCorpus
     template_name = 'poem_list.html'
     context_object_name = 'poem_list'
     paginate_by = 10
 
 class PoemDetail(generic.DetailView):
-    model = Poem
+    model = PoemSubCorpus
     template_name = 'poem_detail.html'
     context_object_name = 'poem'
 
@@ -28,9 +29,15 @@ class PoemsList(views.APIView):
         random_param = request.query_params.get('random')
 
         if random_param == 'true':
-            poems = Poem.objects.order_by('?').all()
+            poems = PoemSubCorpus.objects.order_by('?').all()
+            # preprocessing
+            for poem in poems:
+                lines = poem.content.split('\n')
+                lines = [l for l in lines if l != '' and l != 'I']
+                poem.content = '\n'.join(lines)
+            # this changes poem.content displayed
         else:
-            poems = Poem.objects.order_by('title').all()
+            poems = PoemSubCorpus.objects.order_by('title').all()
 
-        serializer = PoemSerializer(poems, many=True)
+        serializer = PoemSubCorpusSerializer(poems, many=True)
         return views.Response(serializer.data, status=views.status.HTTP_200_OK)
