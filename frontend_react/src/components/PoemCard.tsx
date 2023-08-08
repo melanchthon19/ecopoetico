@@ -1,6 +1,6 @@
 import { Box, Paper, Tooltip, Typography, Zoom } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
 import PoemDialog from './PoemDialog';
 
 const getRandomNumberSplits = () => Math.floor(Math.random() * 3) + 1; // Generates a random number between 0 and 2 (inclusive)
@@ -8,7 +8,19 @@ const getRandomNumberSplits = () => Math.floor(Math.random() * 3) + 1; // Genera
 export default function PoemCard({ poem, scroll }: { poem: Poem, scroll: Dispatch<SetStateAction<boolean>> }) {
   const [open, setOpen] = useState(false);
   const [randomSplits] = useState(getRandomNumberSplits);
-
+  const [formattedContent, setFormattedContent] = useState<JSX.Element[]>([]);
+  useLayoutEffect(() => {
+    const keywords = poem.keywords ? poem.keywords.split(' '): null;
+    const cardShortContent = poem.content.split('\n', randomSplits).join('\n')
+    const contentWords = cardShortContent.split(' ');
+    const formattedContentWords = contentWords.map((word, index) => {
+      if (keywords && keywords.includes(word)) {
+        return <strong key={index}>{word} </strong>;
+      }
+      return <span key={index}>{word} </span>;
+    })
+    setFormattedContent(formattedContentWords);
+  }, [poem]);
   const handleClickOpen = () => {
     setOpen(true);
     scroll(false);
@@ -28,7 +40,7 @@ export default function PoemCard({ poem, scroll }: { poem: Poem, scroll: Dispatc
         <Paper variant="outlined" sx={{ p: 3, cursor: 'pointer', '&:hover': { border: 1 }, maxWidth: 550 }} onClick={handleClickOpen}>
           <Box>
             <Typography align="center" fontFamily="Merriweather" fontSize={24} whiteSpace="pre-line">
-              {poem.content.split('\n', randomSplits).join('\n')}
+              {formattedContent}
             </Typography>
           </Box>
         </Paper>
