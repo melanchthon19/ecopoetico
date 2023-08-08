@@ -5,4 +5,5 @@ type Poem = {
   author: string;
   content: string;
   similars: number[];
+  keywords: string;
 };
