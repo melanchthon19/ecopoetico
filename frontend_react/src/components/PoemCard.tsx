@@ -25,7 +25,7 @@ export default function PoemCard({ poem, scroll }: { poem: Poem, scroll: Dispatc
       whileHover={{ scale: 1.25, transition: { delay: 0, duration: 0.2 } }}
     >
       <Tooltip title={poem.title} followCursor TransitionComponent={Zoom} sx={{ fontSize: '20px' }}>
-        <Paper variant="outlined" sx={{ p: 3, cursor: 'pointer', '&:hover': { border: 1 } }} onClick={handleClickOpen}>
+        <Paper variant="outlined" sx={{ p: 3, cursor: 'pointer', '&:hover': { border: 1 }, maxWidth: 550 }} onClick={handleClickOpen}>
           <Box>
             <Typography align="center" fontFamily="Merriweather" fontSize={24} whiteSpace="pre-line">
               {poem.content.split('\n', randomSplits).join('\n')}
