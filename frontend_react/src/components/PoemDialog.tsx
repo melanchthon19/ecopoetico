@@ -34,7 +34,7 @@ export default function PoemDialog({ poem, open, setOpen, scroll, setPoems }: Po
 
   useLayoutEffect(() => {
     const keywords = poem.keywords ? poem.keywords.split(' ') : null;
-    const contentWords = poem.content.split(' ');
+    const contentWords = poem.content.trim().split(' ');
     const formattedContentWords = contentWords.map((word, index) => {
       if (keywords && keywords.includes(word)) {
         return <strong key={index}>{word} </strong>;

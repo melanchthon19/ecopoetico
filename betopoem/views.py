@@ -31,10 +31,10 @@ class PoemsList(views.APIView):
         if random_param == 'true':
             poems = PoemSubCorpus.objects.order_by('?').all()
             # preprocessing
-            for poem in poems:
-                lines = poem.content.split('\n')
-                lines = [l for l in lines if l != '' and l != 'I']
-                poem.content = '\n'.join(lines)
+            # for poem in poems:
+            #     lines = poem.content.split('\n')
+            #     lines = [l for l in lines if l != '' and l != 'I']
+            #     poem.content = '\n'.join(lines)
             # this changes poem.content displayed
         else:
             poems = PoemSubCorpus.objects.order_by('title').all()

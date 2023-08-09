@@ -11,7 +11,7 @@ type PoemCardProps = {
 
 export default function PoemCard({ poem, scroll, setPoems }: PoemCardProps) {
   const getRandomVerseSplits = () => Math.floor(Math.random() * 3) + 1; // Generates a random number between 0 and 2 (inclusive)
-  const getRandomCutPoem = () => Math.floor(Math.random() * poem.content.split('\n').length);
+  const getRandomCutPoem = () => Math.floor(Math.random() * poem.content.trim().split(/\n+/).length);
   
   const [open, setOpen] = useState(false);
   const [randomSplits] = useState(getRandomVerseSplits);
@@ -20,8 +20,9 @@ export default function PoemCard({ poem, scroll, setPoems }: PoemCardProps) {
   
   
   useLayoutEffect(() => {
-    const cutPoemContent = poem.content.split('\n').slice(randomCutPoem).join('\n');
     const keywords = poem.keywords ? poem.keywords.split(' '): null;
+    const verses = poem.content.trim().split(/\n+/).map((verse) => verse.trim());
+    const cutPoemContent = verses.slice(randomCutPoem).join('\n');
     const cardShortContent = cutPoemContent.split('\n', randomSplits).join('\n')
     const contentWords = cardShortContent.split(' ');
     const formattedContentWords = contentWords.map((word, index) => {
