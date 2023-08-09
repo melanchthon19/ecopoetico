@@ -1,12 +1,14 @@
 import { Container, Stack } from '@mui/material';
 import PoemCard from '../components/PoemCard';
 import { useLayoutEffect, useState } from 'react';
+import Loading from '../components/Loading';
 
 
 
 export default function Home() {
   const [scrollHorizontally, setScrollHorizontally] = useState(true);
-  const [poems, setPoems] = useState([]);
+  const [poems, setPoems] = useState<Poem[]>([]);
+
   useLayoutEffect(() => {
     const getPoems = async () => {
       const response = await fetch('http://localhost:8000/api/poems?random=true');
@@ -28,10 +30,11 @@ export default function Home() {
       maxWidth={false}
       sx={{ p: 2, height: '92vh', overflowY: 'hidden', '&::-webkit-scrollbar': { width: 0 } }}
       onWheel={handleHorizontalScroll}
-    >
+      >
+      <Loading open={poems.length < 1} />
       <Stack spacing={3} useFlexGap flexWrap="wrap" justifyContent="center" alignItems="center" height="100%">
         {poems.map((poem: Poem) => {
-          return <PoemCard key={poem.id} poem={poem} scroll={setScrollHorizontally} />;
+          return <PoemCard key={poem.id} poem={poem} scroll={setScrollHorizontally} setPoems={setPoems} />;
         })}
       </Stack>
     </Container>

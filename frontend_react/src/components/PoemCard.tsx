@@ -3,15 +3,26 @@ import { motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
 import PoemDialog from './PoemDialog';
 
-const getRandomNumberSplits = () => Math.floor(Math.random() * 3) + 1; // Generates a random number between 0 and 2 (inclusive)
+type PoemCardProps = {
+  poem: Poem;
+  scroll: Dispatch<SetStateAction<boolean>>;
+  setPoems: Dispatch<SetStateAction<Poem[]>>;
+};
 
-export default function PoemCard({ poem, scroll }: { poem: Poem, scroll: Dispatch<SetStateAction<boolean>> }) {
+export default function PoemCard({ poem, scroll, setPoems }: PoemCardProps) {
+  const getRandomVerseSplits = () => Math.floor(Math.random() * 3) + 1; // Generates a random number between 0 and 2 (inclusive)
+  const getRandomCutPoem = () => Math.floor(Math.random() * poem.content.split('\n').length);
+  
   const [open, setOpen] = useState(false);
-  const [randomSplits] = useState(getRandomNumberSplits);
+  const [randomSplits] = useState(getRandomVerseSplits);
   const [formattedContent, setFormattedContent] = useState<JSX.Element[]>([]);
+  const [randomCutPoem] = useState(getRandomCutPoem);
+  
+  
   useLayoutEffect(() => {
+    const cutPoemContent = poem.content.split('\n').slice(randomCutPoem).join('\n');
     const keywords = poem.keywords ? poem.keywords.split(' '): null;
-    const cardShortContent = poem.content.split('\n', randomSplits).join('\n')
+    const cardShortContent = cutPoemContent.split('\n', randomSplits).join('\n')
     const contentWords = cardShortContent.split(' ');
     const formattedContentWords = contentWords.map((word, index) => {
       if (keywords && keywords.includes(word)) {
@@ -46,7 +57,7 @@ export default function PoemCard({ poem, scroll }: { poem: Poem, scroll: Dispatc
         </Paper>
       </Tooltip>
     </motion.div>
-    <PoemDialog poem={poem} open={open} setOpen={setOpen} scroll={scroll}/>
+    <PoemDialog poem={poem} open={open} setOpen={setOpen} scroll={scroll} setPoems={setPoems}/>
     </Box>
   );
 }
