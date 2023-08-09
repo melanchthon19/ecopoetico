@@ -41,3 +41,14 @@ class PoemsList(views.APIView):
 
         serializer = PoemSubCorpusSerializer(poems, many=True)
         return views.Response(serializer.data, status=views.status.HTTP_200_OK)
+
+class PoemSimilars(views.APIView):
+    def get(self, request, pid):
+        try:
+            poem = PoemSubCorpus.objects.get(id=pid)
+        except:
+            error_message = {'error': 'Poem not found.'}
+            return views.Response(error_message, status=views.status.HTTP_404_NOT_FOUND)
+        similars = poem.similars.order_by('?').all()
+        serializer = PoemSubCorpusSerializer(similars, many=True)
+        return views.Response(serializer.data, status=views.status.HTTP_200_OK)

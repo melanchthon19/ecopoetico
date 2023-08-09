@@ -3,8 +3,13 @@ import { motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
 import PoemDialog from './PoemDialog';
 
+type PoemCardProps = {
+  poem: Poem;
+  scroll: Dispatch<SetStateAction<boolean>>;
+  setPoems: Dispatch<SetStateAction<Poem[]>>;
+};
 
-export default function PoemCard({ poem, scroll }: { poem: Poem, scroll: Dispatch<SetStateAction<boolean>> }) {
+export default function PoemCard({ poem, scroll, setPoems }: PoemCardProps) {
   const getRandomVerseSplits = () => Math.floor(Math.random() * 3) + 1; // Generates a random number between 0 and 2 (inclusive)
   const getRandomCutPoem = () => Math.floor(Math.random() * poem.content.split('\n').length);
   
@@ -52,7 +57,7 @@ export default function PoemCard({ poem, scroll }: { poem: Poem, scroll: Dispatc
         </Paper>
       </Tooltip>
     </motion.div>
-    <PoemDialog poem={poem} open={open} setOpen={setOpen} scroll={scroll}/>
+    <PoemDialog poem={poem} open={open} setOpen={setOpen} scroll={scroll} setPoems={setPoems}/>
     </Box>
   );
 }

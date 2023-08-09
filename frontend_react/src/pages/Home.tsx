@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 
 export default function Home() {
   const [scrollHorizontally, setScrollHorizontally] = useState(true);
-  const [poems, setPoems] = useState([]);
+  const [poems, setPoems] = useState<Poem[]>([]);
 
   useLayoutEffect(() => {
     const getPoems = async () => {
@@ -34,7 +34,7 @@ export default function Home() {
       <Loading open={poems.length < 1} />
       <Stack spacing={3} useFlexGap flexWrap="wrap" justifyContent="center" alignItems="center" height="100%">
         {poems.map((poem: Poem) => {
-          return <PoemCard key={poem.id} poem={poem} scroll={setScrollHorizontally} />;
+          return <PoemCard key={poem.id} poem={poem} scroll={setScrollHorizontally} setPoems={setPoems} />;
         })}
       </Stack>
     </Container>
