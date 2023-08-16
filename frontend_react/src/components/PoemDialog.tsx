@@ -6,29 +6,28 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
-import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { PoemContext } from './PoemContext';
 
 type PoemDialogProps = {
   poem: Poem;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   scroll: Dispatch<SetStateAction<boolean>>;
-  setPoems: Dispatch<SetStateAction<Poem[]>>;
 };
 
-export default function PoemDialog({ poem, open, setOpen, scroll, setPoems }: PoemDialogProps) {
+export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogProps) {
   const [formattedContent, setFormattedContent] = useState<JSX.Element[]>([]);
+  const { addPoemSimilars, getSimilarPoems } = useContext(PoemContext) as PoemContextType;
 
   const handleClose = () => {
     setOpen(false);
     scroll(true);
   };
   const handleSimilars = async () => {
-    setPoems([]);
-    const response = await fetch(`http://localhost:8000/api/poems/${poem.id}/similars`);
-    const data = await response.json();
+    getSimilarPoems(poem.id.toString());
     handleClose();
-    setPoems(data);
+    addPoemSimilars(poem);
   };
   const descriptionElementRef = useRef<HTMLElement>(null);
 
@@ -95,7 +94,9 @@ export default function PoemDialog({ poem, open, setOpen, scroll, setPoems }: Po
         </DialogContent>
         <DialogActions>
           <Stack direction="row" spacing={5} justifyContent="space-between" alignItems="center" width="100%" paddingX={5}>
-            <Button variant='contained' onClick={handleSimilars}>View Similars</Button>
+            <Button variant="contained" onClick={handleSimilars}>
+              View Similars
+            </Button>
             <Typography fontWeight={400} fontFamily="Playfair Display" fontSize={20} variant="body1" color="black">
               {poem.author}
             </Typography>

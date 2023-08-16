@@ -6,6 +6,8 @@ import { CssBaseline } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import Navbar from './components/Navbar';
+import PoemProvider from './components/PoemContext';
+import Print from './pages/Print';
 
 const theme = createTheme({
   typography: {
@@ -36,10 +38,13 @@ function App() {
     <CssBaseline>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-        <Navbar />
-          <Routes>
-            <Route path="/react_test" element={<Home />} />
-          </Routes>
+          <PoemProvider>
+            <Navbar />
+            <Routes>
+              <Route path="/react_test" element={<Home />} />
+              <Route path='/print' element={<Print />} /> 
+            </Routes>
+          </PoemProvider>
         </BrowserRouter>
       </ThemeProvider>
     </CssBaseline>
