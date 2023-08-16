@@ -4,12 +4,11 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { PoemContext } from './PoemContext';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import Breadcrum from './Breadcrum';
-import { Link } from 'react-router-dom';
 
 export default function Navbar() {
-  const { currentPoemSimilars, similarPoemsList } = useContext(PoemContext) as PoemContextType;
+  const { currentPoemSimilars } = useContext(PoemContext) as PoemContextType;
 
   return (
     <AppBar position="static" sx={{ border: 'none', boxShadow: 'none' }}>
@@ -18,13 +17,15 @@ export default function Navbar() {
               <MenuIcon />
             </IconButton> */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
-          <Typography variant="h6" component="div" align="left">
-            EcoPoético
-          </Typography>
+          <a href="/react_test">
+            <Typography variant="h6" component="div" align="left">
+              EcoPoético
+            </Typography>
+          </a>
         </motion.div>
         {currentPoemSimilars && (
           <Box mx="auto">
-            <Breadcrum/>
+            <Breadcrum />
           </Box>
         )}
       </Toolbar>

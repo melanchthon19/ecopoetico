@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import PoemCard from '../components/PoemCard';
 import { useContext, useState } from 'react';
 import Loading from '../components/Loading';
@@ -6,7 +6,7 @@ import { PoemContext } from '../components/PoemContext';
 
 export default function Home() {
   const [scrollHorizontally, setScrollHorizontally] = useState(true);
-  const { poems, similarPoemsList } = useContext(PoemContext) as PoemContextType;
+  const { poems } = useContext(PoemContext) as PoemContextType;
 
   const handleHorizontalScroll = (event: any) => {
     const container = event.currentTarget;
