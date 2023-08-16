@@ -6,6 +6,7 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
   const [currentPoemSimilars, setCurrentPoem] = useState<Poem | undefined>(undefined);
   const [similarPoemsList] = useState<Poem[]>([]);
   const [poems, setPoems] = useState<Poem[]>([]);
+  const [myPoems, setMyPoems] = useState<Poem[]>([]);
 
   useLayoutEffect(() => {
     const getPoems = async () => {
@@ -42,6 +43,8 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
     poems,
     getAllPoems,
     getSimilarPoems,
+    myPoems,
+    setMyPoems,
   };
   return <PoemContext.Provider value={contextValue}>{children}</PoemContext.Provider>;
 }

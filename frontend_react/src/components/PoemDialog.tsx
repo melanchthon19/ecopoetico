@@ -94,8 +94,8 @@ export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogPr
         </DialogContent>
         <DialogActions>
           <Stack direction="row" spacing={5} justifyContent="space-between" alignItems="center" width="100%" paddingX={5}>
-            <Button variant="contained" onClick={handleSimilars}>
-              View Similars
+            <Button color='info' variant="contained" onClick={handleSimilars}>
+              Travel
             </Button>
             <Typography fontWeight={400} fontFamily="Playfair Display" fontSize={20} variant="body1" color="black">
               {poem.author}

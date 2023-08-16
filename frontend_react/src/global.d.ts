@@ -7,3 +7,13 @@ type Poem = {
   similars: number[];
   keywords: string;
 };
+interface PoemContextType {
+  currentPoemSimilars: Poem | undefined;
+  addPoemSimilars: (poem: Poem) => void;
+  similarPoemsList: Poem[];
+  poems: Poem[];
+  getAllPoems: () => void;
+  getSimilarPoems: (pid: string) => void;
+  myPoems: Poem[];
+  setMyPoems: (poems: Poem[]) => void;
+}
