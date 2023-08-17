@@ -87,7 +87,3 @@ local_settings.py
 
 .env
 db.sqlite3
-
-### Dev Dockerfiles
-docker-compose-dev.yml
-Dockerfile.dev
