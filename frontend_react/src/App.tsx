@@ -42,7 +42,7 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="/react_test" element={<Home />} />
-              <Route path='/print' element={<Print />} /> 
+              <Route path="/print" element={<Print />} />
             </Routes>
           </PoemProvider>
         </BrowserRouter>

@@ -23,7 +23,7 @@ export default function Breadcrum() {
   return (
     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
       <InputLabel id="poem-breadcrumb" sx={{ fontSize: 20 }}>
-        Similar to
+        My Path
       </InputLabel>
       <Select labelId="poem-breadcrumb" id="breadcrumb" value={breadcrumbValue} onChange={handleChange} label="Similar Poems ist">
         <MenuItem divider value="all">
