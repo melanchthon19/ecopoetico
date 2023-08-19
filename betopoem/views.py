@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from .models import Poem, PoemSubCorpus
 from .serializers import PoemSerializer, PoemSubCorpusSerializer
-from rest_framework import views
+from rest_framework.views import APIView, status, Response
 
 import re
 
@@ -24,7 +24,7 @@ class PoemDetail(generic.DetailView):
 class ReactTemplateView(generic.TemplateView):
     template_name = 'dist/index.html'  # Replace 'your_react_template.html' with the path to your React index.html
 
-class PoemsList(views.APIView):
+class PoemsList(APIView):
     def get(self, request):
         random_param = request.query_params.get('random')
 
@@ -40,15 +40,22 @@ class PoemsList(views.APIView):
             poems = PoemSubCorpus.objects.order_by('title').all()
 
         serializer = PoemSubCorpusSerializer(poems, many=True)
-        return views.Response(serializer.data, status=views.status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-class PoemSimilars(views.APIView):
+class PoemSimilars(APIView):
     def get(self, request, pid):
         try:
             poem = PoemSubCorpus.objects.get(id=pid)
         except:
             error_message = {'error': 'Poem not found.'}
-            return views.Response(error_message, status=views.status.HTTP_404_NOT_FOUND)
+            return Response(error_message, status=status.HTTP_404_NOT_FOUND)
         similars = poem.similars.order_by('?').all()
         serializer = PoemSubCorpusSerializer(similars, many=True)
-        return views.Response(serializer.data, status=views.status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class PrintPoems(APIView):
+    def post(self, request):
+        data = request.data
+        print(data)
+        print(type(data))
+        return Response({'result': 'success'}, status=status.HTTP_200_OK)

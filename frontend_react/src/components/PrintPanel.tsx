@@ -2,6 +2,7 @@ import { Box, Button, Divider, Chip, Drawer, List, Paper, Stack, Typography } fr
 import { useContext, useState } from 'react';
 import { PoemContext } from './PoemContext';
 import PrintListItem from './PrintListItem';
+import Loading from './Loading';
 
 type PrintBarProps = {
   print: boolean;
@@ -11,7 +12,8 @@ type PrintBarProps = {
 export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   const { similarPoemsList } = useContext(PoemContext) as PoemContextType;
   const uniqueSimilarPoemsList = similarPoemsList.filter((poem, index, self) => index === self.findIndex((t) => t.id === poem.id));
-  const [checked, setChecked] = useState([1]);
+  const [checked, setChecked] = useState<number[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const selectAll = () => {
     setChecked(uniqueSimilarPoemsList.map((poem) => poem.id));
@@ -32,6 +34,19 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
 
     setChecked(newChecked);
   };
+  
+  const handleGenerate = async () => {
+    setLoading(true);
+    await fetch('http://localhost:8000/api/poems/print', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(checked),
+    });
+    setLoading(false);
+  }
+
   return (
     <Drawer anchor="right" open={print} onClose={() => setPrint(!print)}>
       <Box height="100%" p={5}>
@@ -50,11 +65,12 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
             })}
           </List>
         </Paper>
-        <Button variant="contained" color="error" sx={{ display: 'block', mx: 'auto', my: 3 }}>
+        <Button onClick={handleGenerate} variant="contained" color="error" sx={{ display: 'block', mx: 'auto', my: 3 }}>
           <Typography fontWeight={700}>Generate</Typography>
         </Button>
       </Box>
       <Button component='div' color='info' onClick={() => setPrint(false)} sx={{py: 3}}>Close</Button>
+    <Loading open={loading} />
     </Drawer>
   );
 }

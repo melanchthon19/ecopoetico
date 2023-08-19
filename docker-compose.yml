@@ -1,0 +1,36 @@
+version: '3'
+services:
+  django:
+    image: spy0x/django-ecopoetico
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    container_name: django-dev
+    ports:
+      - "8000:8000"
+    networks:
+      - django-network
+    command: python manage.py runserver 0.0.0.0:8000
+  react:
+    image: spy0x/nodejs-coderhouse
+    build:
+      context: ./frontend_react
+      dockerfile: Dockerfile
+    working_dir: /usr/src/app
+    volumes:
+      - ./frontend_react:/usr/src/app
+    container_name: react-dev
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - django-network
+    depends_on:
+      - django
+
+networks:
+  django-network:
+    driver: bridge
