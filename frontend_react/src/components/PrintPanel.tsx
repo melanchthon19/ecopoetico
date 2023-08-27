@@ -37,14 +37,43 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   
   const handleGenerate = async () => {
     setLoading(true);
-    await fetch('http://localhost:8000/api/poems/print', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(checked),
-    });
-    setLoading(false);
+    try {
+      const response = await fetch('http://localhost:8000/api/poems/print', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(checked),
+      });
+      // const response = await fetch('http://localhost:8000/api/poems/print_test');
+      setLoading(false);
+      if (response.ok) {
+        const blob = await response.blob(); // Convert the response to a Blob
+
+        // Get filename from response headers (assuming the server provides it)
+        const contentDisposition = response.headers.get('content-disposition');
+        const match = contentDisposition?.match(/filename="(.+)"/);
+        const filename = match ? match[1] : 'downloaded_file.txt';
+
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = filename; // Set the filename based on the headers
+        document.body.appendChild(downloadLink);
+
+        // Simulate a click on the link to trigger the download
+        downloadLink.click();
+
+        // Clean up
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(downloadLink.href);
+      } else {
+        console.error('Error downloading the file.');
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   }
 
   return (
