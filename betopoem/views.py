@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.views import generic
 from .models import Poem, PoemSubCorpus
 from .serializers import PoemSerializer, PoemSubCorpusSerializer
@@ -59,3 +60,21 @@ class PrintPoems(APIView):
         print(data)
         print(type(data))
         return Response({'result': 'success'}, status=status.HTTP_200_OK)
+
+class PrintPoemsTest(APIView):
+    def get(self, request):
+        poems = [
+            'Mis poemas',
+            'Título 1\n\nso much depends\nupon\n\na red wheel\nbarrow\n\nglazed with rain\nwater\n\nbeside the white\nchickens\n\n',
+            'Título 2\n\nApril is the cruellest month, breeding\nLilacs out of the dead land, mixing\nMemory and desire, stirring\nDull roots with spring rain.\nWinter kept us warm, covering\nEarth in forgetful snow, feeding\nA little life with dried tubers.\nSummer surprised us, coming over the Starnbergersee\nWith a shower of rain; we stopped in the colonnade,\nAnd went on in sunlight, into the Hofgarten,\nAnd drank coffee, and talked for an hour.\nBin gar keine Russin, stamm’ aus Litauen, echt deutsch.\nAnd when we were children, staying at the archduke’s,\nMy cousin’s, he took me out on a sled,\nAnd I was frightened. He said, Marie,\nMarie, hold on tight. And down we went.\nIn the mountains, there you feel free.\nI read, much of the night, and go south in the winter.',
+        ]
+        print(poems)
+
+        # Prepare the content of the file
+        content = "\n\n".join(poems)  # Join poems with two newlines
+
+        # Create an HttpResponse with the content
+        response = HttpResponse(content, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="poems.txt"'
+
+        return response
