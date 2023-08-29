@@ -14,6 +14,7 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   const uniqueSimilarPoemsList = similarPoemsList.filter((poem, index, self) => index === self.findIndex((t) => t.id === poem.id));
   const [checked, setChecked] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const selectAll = () => {
     setChecked(uniqueSimilarPoemsList.map((poem) => poem.id));
@@ -38,14 +39,13 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/api/poems/print', {
+      const response = await fetch(`${apiUrl}/api/poems/print`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(checked),
       });
-      // const response = await fetch('http://localhost:8000/api/poems/print_test');
       setLoading(false);
       if (response.ok) {
         const blob = await response.blob(); // Convert the response to a Blob

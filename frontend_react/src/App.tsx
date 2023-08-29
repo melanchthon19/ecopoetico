@@ -7,7 +7,6 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import Navbar from './components/Navbar';
 import PoemProvider from './components/PoemContext';
-import Print from './pages/Print';
 
 const theme = createTheme({
   typography: {
@@ -41,8 +40,7 @@ function App() {
           <PoemProvider>
             <Navbar />
             <Routes>
-              <Route path="/react_test" element={<Home />} />
-              <Route path="/print" element={<Print />} />
+              <Route path="/" element={<Home />} />
             </Routes>
           </PoemProvider>
         </BrowserRouter>
