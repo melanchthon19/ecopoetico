@@ -142,6 +142,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-if DEBUG:
-    import mimetypes
-    mimetypes.add_type("application/javascript", ".js", True)
+
+import mimetypes
+mimetypes.add_type("application/javascript", ".js", True)
