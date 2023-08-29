@@ -21,7 +21,7 @@ export default function Navbar() {
             </IconButton> */}
           <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
-              <a href="/react_test">
+              <a href="/">
                 <Typography variant="h6" component="div" align="left">
                   EcoPoético
                 </Typography>
