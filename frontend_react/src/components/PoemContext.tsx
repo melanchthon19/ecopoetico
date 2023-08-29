@@ -7,10 +7,11 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
   const [similarPoemsList] = useState<Poem[]>([]);
   const [poems, setPoems] = useState<Poem[]>([]);
   const [myPoems, setMyPoems] = useState<Poem[]>([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useLayoutEffect(() => {
     const getPoems = async () => {
-      const response = await fetch('http://localhost:8000/api/poems?random=true');
+      const response = await fetch(`${apiUrl}/api/poems?random=true`);
       const data = await response.json();
       return data;
     };
@@ -24,14 +25,14 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
 
   async function getAllPoems() {
     setPoems([]);
-    const response = await fetch('http://localhost:8000/api/poems?random=true');
+    const response = await fetch(`${apiUrl}/api/poems?random=true`);
     const data = await response.json();
     setPoems(data);
   }
 
   async function getSimilarPoems(pid: string) {
     setPoems([]);
-    const response = await fetch(`http://localhost:8000/api/poems/${pid}/similar`);
+    const response = await fetch(`${apiUrl}/api/poems/${pid}/similar`);
     const data = await response.json();
     setPoems(data);
   }
