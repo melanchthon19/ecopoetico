@@ -28,7 +28,7 @@ REACT_TEMPLATE_DIR = os.path.join(BASE_DIR, 'frontend_react')
 SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['ecopoetico.pythonanywhere.com', 'localhost']
 
@@ -57,9 +57,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+# ]
 
 CORS_ALLOW_ALL_ORIGINS=False
 
