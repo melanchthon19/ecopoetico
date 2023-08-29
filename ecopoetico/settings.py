@@ -28,9 +28,9 @@ REACT_TEMPLATE_DIR = os.path.join(BASE_DIR, 'frontend_react')
 SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ecopoetico.pythonanywhere.com', 'localhost']
 
 
 # Application definition
@@ -58,13 +58,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # Add the URL of your React frontend
-    'http://localhost:8000',  # Add the URL of your React frontend
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:8000",
+    'http://localhost:3000',
 ]
 
-CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOW_ALL_ORIGINS=False
 
 ROOT_URLCONF = 'ecopoetico.urls'
 
