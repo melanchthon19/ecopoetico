@@ -47,9 +47,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # CORS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -57,11 +57,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:3000',
-# ]
+CORS_ALLOWED_ORIGINS = [
+     'http://127.0.0.1:3000',
+     'http://localhost:8080',
+     'http://localhost:8000',
+     "http://localhost:3000"
+]
 
-CORS_ALLOW_ALL_ORIGINS=False
+# CORS_ALLOW_ALL_ORIGINS=False
 
 ROOT_URLCONF = 'ecopoetico.urls'
 
@@ -132,7 +135,7 @@ USE_TZ = True
 # FRONTEND STATIC FOLDER
 REACT_STATIC_PATH = os.path.join(BASE_DIR, 'frontend_react/dist/')
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     REACT_STATIC_PATH,
