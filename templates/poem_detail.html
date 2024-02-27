@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 
 {% block header %} {% include 'header.html' %} {% endblock header %}
@@ -30,5 +31,28 @@
         </div>
     </div>
 </div>
+
+{% if random_sound_file %}
+    <audio id="backgroundSound" src="{% static random_sound_file %}" preload="auto" autoplay loop></audio>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var sound = document.getElementById("backgroundSound");
+        if (sound) {
+            sound.play().catch(error => console.log("Playback prevented by the browser."));
+        }
+    });
+    </script>
+{% endif %}
+
+{% if click_sound_file %}
+    <audio id="clickSound" src="{% static click_sound_file %}" preload="auto" style="display:none;"></audio>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var sound = document.getElementById("clickSound");
+        sound.play().catch(error => console.error("Sound playback was prevented by the browser."));
+    });
+    </script>
+{% endif %}
 
 {%endblock%}

@@ -8,6 +8,11 @@ from rest_framework.views import APIView, status, Response
 import re
 from .printable import data2print
 
+import os
+import random
+from django.conf import settings
+
+
 def home(request):
     poems = PoemSubCorpus.objects.order_by('?').all()
     return render(request, 'home.html', context={'poem_list': poems})
@@ -18,10 +23,40 @@ class PostList(generic.ListView):
     context_object_name = 'poem_list'
     paginate_by = 10
 
+#class PoemDetail(generic.DetailView):
+#    model = PoemSubCorpus
+#    template_name = 'poem_detail.html'
+#    context_object_name = 'poem'
+
 class PoemDetail(generic.DetailView):
     model = PoemSubCorpus
     template_name = 'poem_detail.html'
     context_object_name = 'poem'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        
+        # Add click sound
+        sound_click_path = 'sounds/general/warpdown-thehorriblejoke-freesound.mp3'
+        context['click_sound_file'] = sound_click_path
+        
+        # Add random poem sound
+        # Path where your sound files are stored, adjust as needed
+        sound_files_path = 'sounds/poems'
+        sound_files_dir = os.path.join(settings.BASE_DIR, 'static', sound_files_path)
+        sound_files = [f for f in os.listdir(sound_files_dir) if os.path.isfile(os.path.join(sound_files_dir, f))]
+        
+        # Select a random sound file
+        if sound_files:
+            random_sound_file = random.choice(sound_files)
+            # Save the relative path to the selected sound file to use in the template
+            context['random_sound_file'] = os.path.join(sound_files_path, random_sound_file)
+        else:
+            # Handle case where no sound files are found
+            context['random_sound_file'] = None
+
+        return context
 
 class ReactTemplateView(generic.TemplateView):
     template_name = 'dist/index.html'  # Replace 'your_react_template.html' with the path to your React index.html
@@ -58,8 +93,6 @@ class PoemSimilars(APIView):
 class PrintPoems(APIView):
     def post(self, request):
         data = request.data
-        #print(data)
-        #print(type(data))
         content = data2print(data)
         # Create an HttpResponse with the content
         response = HttpResponse(content, content_type='text/plain')
