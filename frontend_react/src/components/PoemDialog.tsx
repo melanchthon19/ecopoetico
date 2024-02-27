@@ -95,7 +95,7 @@ export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogPr
         <DialogActions>
           <Stack direction="row" spacing={5} justifyContent="space-between" alignItems="center" width="100%" paddingX={5}>
             <Button color='info' variant="contained" onClick={handleSimilars}>
-              Travel
+              Viajar
             </Button>
             <Typography fontWeight={400} fontFamily="Playfair Display" fontSize={20} variant="body1" color="black">
               {poem.author}

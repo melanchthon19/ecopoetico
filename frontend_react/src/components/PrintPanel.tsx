@@ -35,7 +35,7 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
 
     setChecked(newChecked);
   };
-  
+
   const handleGenerate = async () => {
     setLoading(true);
     try {
@@ -81,7 +81,7 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
       <Box height="100%" p={5}>
         <Paper elevation={3} sx={{ p: 3 }}>
           <Typography display="block" mx="auto" fontWeight={700} fontFamily="Merriweather" variant="overline" fontSize={20} align="center">
-            Print my Path
+            Recordar mi camino
           </Typography>
           <Divider variant="middle" sx={{mb: 2, borderTop: '1px solid rgba(0, 0, 0, 0.87)' }}/>
           <Stack direction="row" spacing={1} justifyContent="center" mb={1}>

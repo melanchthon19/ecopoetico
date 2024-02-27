@@ -30,7 +30,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['ecopoetico.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = [ 'www.ecopoetico.cl', 'ecopoetico.cl', 'ecopoetico.pythonanywhere.com', 'localhost']
 
 
 # Application definition

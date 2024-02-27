@@ -23,7 +23,7 @@ export default function Navbar() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
               <a href="/">
                 <Typography variant="h6" component="div" align="left">
-                  EcoPoético
+                  Eco Poético
                 </Typography>
               </a>
             </motion.div>
@@ -34,7 +34,7 @@ export default function Navbar() {
             )}
             {currentPoemSimilars && (
               <Button variant="contained" color="info" onClick={() => setPrint(true)}>
-                Print
+                Guardar
               </Button>
             )}
           </Stack>
