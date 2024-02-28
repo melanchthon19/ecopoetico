@@ -28,7 +28,7 @@ export default function SplashScreen() {
         onAnimationComplete={handleAnimationComplete}
       >
         <motion.img
-          src="/assets/ecopoetico-logoFULL-tp.png"
+          src="/static/assets/ecopoetico-logoFULL-tp.png"
           width="250"
           alt="ECOPOETICO LOGO"
           initial={{ opacity: 0, x: -15, y: -5 }}
