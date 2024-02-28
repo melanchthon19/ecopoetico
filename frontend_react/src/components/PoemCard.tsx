@@ -11,11 +11,12 @@ type PoemCardProps = {
 export default function PoemCard({ poem, scroll }: PoemCardProps) {
   const getRandomVerseSplits = () => Math.floor(Math.random() * 3) + 1; // Generates a random number between 0 and 2 (inclusive)
   const getRandomCutPoem = () => Math.floor(Math.random() * poem.content.trim().split(/\n+/).length);
-
+  const getRandomFontSize = () => Math.floor(Math.random() * (24 - 12 + 1)) + 12 // Generates a random number between 12 and 24 (inclusive) 
   const [open, setOpen] = useState(false);
   const [randomSplits] = useState(getRandomVerseSplits);
   const [formattedContent, setFormattedContent] = useState<JSX.Element[]>([]);
   const [randomCutPoem] = useState(getRandomCutPoem);
+  const [randomFontSize] = useState(getRandomFontSize);
 
   useLayoutEffect(() => {
     const keywords = poem.keywords ? poem.keywords.split(' ') : null;
@@ -51,7 +52,7 @@ export default function PoemCard({ poem, scroll }: PoemCardProps) {
         <Tooltip title={poem.title} followCursor TransitionComponent={Zoom} sx={{ fontSize: '20px' }}>
           <Paper variant="outlined" sx={{ p: 3, cursor: 'pointer', '&:hover': { border: 1 }, maxWidth: 550 }} onClick={handleClickOpen}>
             <Box>
-              <Typography align="center" fontFamily="Merriweather" fontSize={24} whiteSpace="pre-line">
+              <Typography align="center" fontFamily="Merriweather" fontSize={randomFontSize} whiteSpace="pre-line">
                 {formattedContent}
               </Typography>
             </Box>
