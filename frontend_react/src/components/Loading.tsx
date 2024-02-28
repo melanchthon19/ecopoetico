@@ -16,7 +16,7 @@ export default function Loading({ open }: { open: boolean }) {
             ease: 'linear',
           }}
         >
-          <img src="/assets/logo-tp_grayscale.png" alt="logo" width="100" />
+          <img src="/static/assets/logo-tp_grayscale.png" alt="logo" width="100" />
         </motion.div>
         <div>
           <CircularProgress color="inherit" sx={{ mx: 2 }} />
