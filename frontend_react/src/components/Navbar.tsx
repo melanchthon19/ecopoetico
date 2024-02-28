@@ -25,7 +25,7 @@ export default function Navbar() {
               <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-start">
                 <img src="/assets/logo-tp_color.png" alt="logo" width="50px" />
                 <Typography variant="h4" fontFamily="Londrina Outline" fontWeight="bold" component="div" align="left">
-                  ECOPOÉTICO
+                  ÉCOPOÉTICO
                 </Typography>
               </Stack>
               </a>
