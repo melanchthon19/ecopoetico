@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <>
-      <AppBar position="static" sx={{ border: 'none', boxShadow: 'none' }}>
+      <AppBar position="static">
         <Toolbar sx={{ height: '8vh' }}>
           {/* <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
               <MenuIcon />
