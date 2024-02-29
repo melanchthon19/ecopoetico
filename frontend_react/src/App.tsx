@@ -36,7 +36,7 @@ function App() {
   return (
     <CssBaseline>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
+        <BrowserRouter basename='/'>
           <PoemProvider>
             <Navbar/>
             <Routes>

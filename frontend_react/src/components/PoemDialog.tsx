@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Box, Button, Stack } from '@mui/material';
+import { IconButton, Box, Button, Stack, Tooltip } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -19,12 +19,17 @@ type PoemDialogProps = {
 export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogProps) {
   const [formattedContent, setFormattedContent] = useState<JSX.Element[]>([]);
   const { addPoemSimilars, getSimilarPoems } = useContext(PoemContext) as PoemContextType;
+  const travelButton = useRef<HTMLButtonElement>(null);
+  const {showTravelPopOver, setShowTravelPopOver} = useContext(PoemContext) as PoemContextType;
+
 
   const handleClose = () => {
     setOpen(false);
     scroll(true);
   };
+
   const handleSimilars = async () => {
+    setShowTravelPopOver(false);
     getSimilarPoems(poem.id?.toString() as string);
     handleClose();
     addPoemSimilars(poem);
@@ -94,9 +99,11 @@ export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogPr
         </DialogContent>
         <DialogActions>
           <Stack direction="row" spacing={5} justifyContent="space-between" alignItems="center" width="100%" paddingX={5}>
-            <Button color='info' variant="contained" onClick={handleSimilars}>
-              Viajar
-            </Button>
+            <Tooltip title="Puedes viajar a través de los poemas y ver dónde te dirige." arrow open={showTravelPopOver}>
+              <Button ref={travelButton} color="info" variant="contained" onClick={handleSimilars}>
+                Viajar
+              </Button>
+            </Tooltip>
             <Typography fontWeight={400} fontFamily="Playfair Display" fontSize={20} variant="body1" color="black">
               {poem.author}
             </Typography>

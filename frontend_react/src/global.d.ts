@@ -19,4 +19,8 @@ interface PoemContextType {
   setMyPoems: (poems: Poem[]) => void;
   navBarColor: string;
   setNavBarColor: React.Dispatch<React.SetStateAction<string>>;
+  showTutorial: boolean;
+  setShowTutorial: React.Dispatch<React.SetStateAction<boolean>>;
+  showTravelPopOver: boolean;
+  setShowTravelPopOver: React.Dispatch<React.SetStateAction<boolean>>;
 }

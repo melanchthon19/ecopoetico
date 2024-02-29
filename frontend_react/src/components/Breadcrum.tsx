@@ -1,10 +1,11 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Tooltip } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { PoemContext } from './PoemContext';
 
 export default function Breadcrum() {
-  const { similarPoemsList, currentPoemSimilars, getSimilarPoems, getAllPoems } = useContext(PoemContext) as PoemContextType;
+  const { showTutorial, similarPoemsList, currentPoemSimilars, getSimilarPoems, getAllPoems } = useContext(PoemContext) as PoemContextType;
   const [breadcrumbValue, setBreadcrumbValue] = useState(currentPoemSimilars?.id?.toString());
+  const [showBreadcrumbPopOver, setShowBreadcrumbPopOver] = useState(showTutorial);
 
   useEffect(() => {
     setBreadcrumbValue(currentPoemSimilars?.id?.toString());
@@ -20,12 +21,17 @@ export default function Breadcrum() {
     getSimilarPoems(event.target.value);
   };
 
+  const handleOnClick = () => {
+    setShowBreadcrumbPopOver(false);
+  }
+
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+    <FormControl variant="standard" sx={{ m: 1, minWidth: 120, maxWidth: 300 }}>
       <InputLabel id="poem-breadcrumb" sx={{ fontSize: 20 }}>
-        My Path
+        Mi Camino
       </InputLabel>
-      <Select labelId="poem-breadcrumb" id="breadcrumb" value={breadcrumbValue} onChange={handleChange} label="Similar Poems ist">
+      <Tooltip title="Irás guardando tu camino de poemas a medida que viajas." arrow open={showBreadcrumbPopOver}>
+      <Select labelId="poem-breadcrumb" id="breadcrumb" value={breadcrumbValue} onChange={handleChange} onOpen={handleOnClick} label="Similar Poems ist">
         <MenuItem divider value="all">
           <span className="m-auto text-center">------ ALL POEMS ------</span>
         </MenuItem>
@@ -36,13 +42,14 @@ export default function Breadcrum() {
                 key={index}
                 value={poem.id as number}
                 divider={poem.id?.toString() == breadcrumbValue}
-                sx={{ fontFamily: 'Quattrocento Sans', fontSize: 24, fontWeight: poem.id?.toString() == breadcrumbValue ? 700 : 400 }}
+                sx={{ fontFamily: 'Quattrocento Sans', fontSize: 16, fontWeight: poem.id?.toString() == breadcrumbValue ? 700 : 400 }}
               >
                 {poem.title}
               </MenuItem>
             );
           })}
       </Select>
+      </Tooltip>
     </FormControl>
   );
 }

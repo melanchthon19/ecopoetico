@@ -8,6 +8,8 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
   const [poems, setPoems] = useState<Poem[]>([]);
   const [myPoems, setMyPoems] = useState<Poem[]>([]);
   const [navBarColor, setNavBarColor] = useState('default');
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [showTravelPopOver, setShowTravelPopOver] = useState(showTutorial);
   const apiUrl = import.meta.env.VITE_API_URL;
   const emptyCards = true;
 
@@ -19,6 +21,16 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
     };
     getPoems().then((data) => emptyCards ? addEmptyCards(data) : setPoems(data));
   }, []);
+
+  useLayoutEffect(() => {
+    if (!localStorage.getItem('showTutorial')) {
+      setShowTutorial(true);
+      localStorage.setItem('showTutorial', 'true');
+    } else {
+      setShowTutorial(localStorage.getItem('showTutorial') === 'true');
+    }
+    setShowTravelPopOver(showTutorial);
+  }, [showTutorial]);
 
   function addPoemSimilars(poem: Poem) {
     setCurrentPoem(poem);
@@ -59,7 +71,11 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
     myPoems,
     setMyPoems,
     navBarColor,
-    setNavBarColor
+    setNavBarColor,
+    showTutorial,
+    setShowTutorial,
+    showTravelPopOver,
+    setShowTravelPopOver,
   };
   return <PoemContext.Provider value={contextValue}>{children}</PoemContext.Provider>;
 }
