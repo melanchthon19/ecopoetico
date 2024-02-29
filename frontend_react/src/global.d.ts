@@ -1,5 +1,6 @@
+
 type Poem = {
-  id: number;
+  id: number | null;
   slug: string;
   title: string;
   author: string;
@@ -16,4 +17,6 @@ interface PoemContextType {
   getSimilarPoems: (pid: string) => void;
   myPoems: Poem[];
   setMyPoems: (poems: Poem[]) => void;
+  navBarColor: string;
+  setNavBarColor: React.Dispatch<React.SetStateAction<string>>;
 }

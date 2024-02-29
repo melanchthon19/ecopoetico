@@ -4,6 +4,7 @@ import { useContext, useState } from 'react';
 import Loading from '../components/Loading';
 import { PoemContext } from '../components/PoemContext';
 import SplashScreen from '../components/SplashScreen';
+import EmptyCard from '../components/EmptyCard';
 
 export default function Home() {
   const [scrollHorizontally, setScrollHorizontally] = useState(true);
@@ -27,8 +28,9 @@ export default function Home() {
       <Loading open={poems.length < 1} />
       {poems && (
         <Stack spacing={3} useFlexGap flexWrap="wrap" justifyContent="center" alignItems="center" height="100%">
-          {poems.map((poem: Poem) => {
-            return <PoemCard key={poem.id} poem={poem} scroll={setScrollHorizontally} />;
+          {poems.map((poem: Poem, index) => {
+            return poem.id ? 
+            <PoemCard key={poem.id} poem={poem} scroll={setScrollHorizontally} /> : <EmptyCard key={index} />;
           })}
         </Stack>
       )}

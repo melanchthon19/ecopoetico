@@ -25,8 +25,8 @@ export default function PrintListItem({poem, handleToggle, checked} : PrintListI
           edge="end"
           onClick={handleCheckBoxClick}
           value={poem.id}
-          onChange={() => handleToggle(poem.id)}
-          checked={checked.indexOf(poem.id) !== -1}
+          onChange={() => handleToggle(poem.id as number)}
+          checked={checked.indexOf(poem.id as number) !== -1}
           inputProps={{ 'aria-labelledby': labelId }}
         />
       }

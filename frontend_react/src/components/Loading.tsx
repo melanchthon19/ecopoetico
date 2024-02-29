@@ -1,10 +1,10 @@
-import { Backdrop, CircularProgress, Stack } from '@mui/material';
+import { Backdrop, Stack } from '@mui/material';
 import { motion } from 'framer-motion';
 
 export default function Loading({ open }: { open: boolean }) {
   return (
     <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
-      <Stack spacing={2} direction="column" alignItems="end" justifyContent="end">
+      <Stack spacing={2} direction="column" alignItems="center" justifyContent="center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{
@@ -19,7 +19,7 @@ export default function Loading({ open }: { open: boolean }) {
           <img src="/static/assets/logo-tp_grayscale.png" alt="logo" width="100" />
         </motion.div>
         <div>
-          <CircularProgress color="inherit" sx={{ mx: 2 }} />
+          {/* <CircularProgress color="inherit" sx={{ mx: 2 }} /> */}
           Cargando...
         </div>
       </Stack>

@@ -4,10 +4,10 @@ import { PoemContext } from './PoemContext';
 
 export default function Breadcrum() {
   const { similarPoemsList, currentPoemSimilars, getSimilarPoems, getAllPoems } = useContext(PoemContext) as PoemContextType;
-  const [breadcrumbValue, setBreadcrumbValue] = useState(currentPoemSimilars?.id.toString());
+  const [breadcrumbValue, setBreadcrumbValue] = useState(currentPoemSimilars?.id?.toString());
 
   useEffect(() => {
-    setBreadcrumbValue(currentPoemSimilars?.id.toString());
+    setBreadcrumbValue(currentPoemSimilars?.id?.toString());
   }, [currentPoemSimilars]);
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -34,9 +34,9 @@ export default function Breadcrum() {
             return (
               <MenuItem
                 key={index}
-                value={poem.id}
-                divider={poem.id.toString() == breadcrumbValue}
-                sx={{ fontFamily: 'Quattrocento Sans', fontSize: 24, fontWeight: poem.id.toString() == breadcrumbValue ? 700 : 400 }}
+                value={poem.id as number}
+                divider={poem.id?.toString() == breadcrumbValue}
+                sx={{ fontFamily: 'Quattrocento Sans', fontSize: 24, fontWeight: poem.id?.toString() == breadcrumbValue ? 700 : 400 }}
               >
                 {poem.title}
               </MenuItem>

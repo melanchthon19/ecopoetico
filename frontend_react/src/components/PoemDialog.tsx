@@ -25,7 +25,7 @@ export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogPr
     scroll(true);
   };
   const handleSimilars = async () => {
-    getSimilarPoems(poem.id.toString());
+    getSimilarPoems(poem.id?.toString() as string);
     handleClose();
     addPoemSimilars(poem);
   };

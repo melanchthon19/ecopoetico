@@ -38,7 +38,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <PoemProvider>
-            <Navbar />
+            <Navbar/>
             <Routes>
               <Route path="/" element={<Home />} />
             </Routes>

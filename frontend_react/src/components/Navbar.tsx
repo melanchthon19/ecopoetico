@@ -4,17 +4,20 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useContext, useState } from 'react';
 import { PoemContext } from './PoemContext';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import Breadcrum from './Breadcrum';
 import PrintPanel from './PrintPanel';
 
 export default function Navbar() {
+  const { navBarColor } = useContext(PoemContext) as PoemContextType;
   const { currentPoemSimilars } = useContext(PoemContext) as PoemContextType;
   const [print, setPrint] = useState(false);
+  const theme = useTheme();
+  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" sx={{backgroundColor: navBarColor}}>
         <Toolbar sx={{ height: '8vh' }}>
           {/* <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
               <MenuIcon />
@@ -22,12 +25,14 @@ export default function Navbar() {
           <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%" height="100%">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
               <a href="/">
-              <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-start">
-                <img src="/static/assets/logo-tp_color.png" alt="logo" width="50px" />
-                <Typography variant="h4" fontFamily="Londrina Outline" fontWeight="bold" component="div" align="left">
-                  ÉCOPOÉTICO
-                </Typography>
-              </Stack>
+                <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-start">
+                  <img src="/static/assets/logo-tp_color.png" alt="logo" width="50px" />
+                  {currentPoemSimilars && isMdDown ? null : (
+                    <Typography variant="h4" fontFamily="Londrina Outline" fontWeight="bold" component="div" align="left">
+                      ÉCOPOÉTICO
+                    </Typography>
+                  )}
+                </Stack>
               </a>
             </motion.div>
             {currentPoemSimilars && (
@@ -43,7 +48,7 @@ export default function Navbar() {
           </Stack>
         </Toolbar>
       </AppBar>
-      <PrintPanel print={print} setPrint={setPrint}/>
+      <PrintPanel print={print} setPrint={setPrint} />
     </>
   );
 }

@@ -50,7 +50,7 @@ export default function PoemCard({ poem, scroll }: PoemCardProps) {
         whileHover={{ scale: 1.25, transition: { delay: 0, duration: 0.2 } }}
       >
         <Tooltip title={poem.title} followCursor TransitionComponent={Zoom} sx={{ fontSize: '20px' }}>
-          <Paper variant="outlined" sx={{ p: 3, cursor: 'pointer', '&:hover': { border: 1 }, maxWidth: 550 }} onClick={handleClickOpen}>
+          <Paper variant="outlined" sx={{ p: 3, cursor: 'pointer', '&:hover': { border: 1 }, maxWidth: 450 }} onClick={handleClickOpen}>
             <Box>
               <Typography align="center" fontFamily="Merriweather" fontSize={randomFontSize} whiteSpace="pre-line">
                 {formattedContent}

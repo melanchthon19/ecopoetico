@@ -17,7 +17,7 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const selectAll = () => {
-    setChecked(uniqueSimilarPoemsList.map((poem) => poem.id));
+    setChecked(uniqueSimilarPoemsList.map((poem) => poem.id as number));
   };
   const deselectAll = () => {
     setChecked([]);
