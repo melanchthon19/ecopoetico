@@ -8,7 +8,7 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
   const [poems, setPoems] = useState<Poem[]>([]);
   const [myPoems, setMyPoems] = useState<Poem[]>([]);
   const [navBarColor, setNavBarColor] = useState('default');
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;//"http://localhost:8000";//
   const emptyCards = true;
 
   useLayoutEffect(() => {
@@ -26,7 +26,7 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
   }
 
   function addEmptyCards(poems: Poem[]) {
-    const emptyCardsCount = Math.floor(poems.length * 0.2); // 20% of the cards will be empty cards
+    const emptyCardsCount = Math.floor(poems.length * 0.5); // 50% of the cards will be empty cards
     for (let i = 0; i < emptyCardsCount; i++) {
       const emptyCard: Poem = { id: null, slug: '', title: '', author: '', content: '', keywords: '', similars: []};
       const randomIndex = Math.floor(Math.random() * poems.length);

@@ -14,7 +14,7 @@ export default function Navbar() {
   const [print, setPrint] = useState(false);
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
-
+  
   return (
     <>
       <AppBar position="static" sx={{backgroundColor: navBarColor}}>
