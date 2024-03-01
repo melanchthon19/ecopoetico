@@ -7,16 +7,18 @@ import { PoemContext } from './PoemContext';
 import { Box, Button, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import Breadcrum from './Breadcrum';
 import PrintPanel from './PrintPanel';
+import SoundManager from './SoundManager';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
-  const { currentPoemSimilars } = useContext(PoemContext) as PoemContextType;
+  const { currentPoemSimilars, musicStarted, setMusicStarted } = useContext(PoemContext) as PoemContextType;
   const { showTutorial } = useContext(PoemContext) as PoemContextType;
   const [showSavePopOver, setShowSavePopOver] = useState(false);
   const [print, setPrint] = useState(false);
   const [disableSaveBtn, setDisableSaveBtn] = useState(showTutorial); 
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+  const [musicButtonName, setMusicButtonName] = useState('Play Music');
 
   const handleOnSave = () => {
     setShowSavePopOver(false);
@@ -27,6 +29,16 @@ export default function Navbar() {
       // setShowSavePopOver(showTutorial);
       setDisableSaveBtn(showTutorial);
    }, [showTutorial]);
+
+  // Function to handle user click to start music
+  const startMusic = () => {
+    setMusicButtonName('Stop Music');
+    setMusicStarted(true);
+  };
+  const stopMusic = () => {
+    setMusicButtonName('Play Music');
+    setMusicStarted(false);
+  };
 
   return (
     <>
@@ -53,6 +65,21 @@ export default function Navbar() {
                 <Breadcrum setSavePopOver={setShowSavePopOver} setDisableSaveBtn={setDisableSaveBtn} />
               </Box>
             )}
+            {musicStarted && <SoundManager musicStarted={musicStarted} />}
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
+              <Button
+              variant="contained"
+              onClick={!musicStarted ? startMusic : stopMusic}
+              sx={{
+                backgroundColor: 'orange', // Set the button color to orange
+                '&:hover': {
+                  backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                },
+              }}
+              >
+                {musicButtonName}
+              </Button>
+            {/* // fin soundmanager */}
             {currentPoemSimilars && (
               <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
                 <Button disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
@@ -60,6 +87,8 @@ export default function Navbar() {
                 </Button>
               </Tooltip>
             )}
+            </Stack>
+            
           </Stack>
         </Toolbar>
       </AppBar>

@@ -23,4 +23,7 @@ interface PoemContextType {
   setShowTutorial: React.Dispatch<React.SetStateAction<boolean>>;
   showTravelPopOver: boolean;
   setShowTravelPopOver: React.Dispatch<React.SetStateAction<boolean>>;
+  musicStarted: boolean;
+  setMusicStarted: React.Dispatch<React.SetStateAction<boolean>>;
+
 }

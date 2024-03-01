@@ -28,9 +28,9 @@ REACT_TEMPLATE_DIR = os.path.join(BASE_DIR, 'frontend_react')
 SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [ 'www.ecopoetico.cl', 'ecopoetico.cl', 'ecopoetico.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = [ '127.0.0.1', 'www.ecopoetico.cl', 'ecopoetico.cl', 'ecopoetico.pythonanywhere.com', 'localhost']
 
 
 # Application definition
