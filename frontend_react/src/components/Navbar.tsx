@@ -7,6 +7,7 @@ import { PoemContext } from './PoemContext';
 import { Box, Button, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import Breadcrum from './Breadcrum';
 import PrintPanel from './PrintPanel';
+import SoundManager from './SoundManager';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
@@ -25,7 +26,14 @@ export default function Navbar() {
   useEffect(() => {
     setShowSavePopOver(showTutorial);
   }, [showTutorial]);
+
+  const [musicStarted, setMusicStarted] = useState(false);
   
+  // Function to handle user click to start music
+  const startMusic = () => {
+    setMusicStarted(true);
+  };
+
   return (
     <>
       <AppBar position="static" sx={{ height: '12vh', backgroundColor: navBarColor, m: 0, p: 0 }}>
@@ -51,6 +59,22 @@ export default function Navbar() {
                 <Breadcrum />
               </Box>
             )}
+            {/* // agregar soundmanager */}
+            {musicStarted ? <SoundManager /> : (
+                <Button
+                variant="contained"
+                onClick={startMusic}
+                sx={{
+                  backgroundColor: 'orange', // Set the button color to orange
+                  '&:hover': {
+                    backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                  },
+                }}
+              >
+                Start Music
+              </Button>
+              )}
+            {/* // fin soundmanager */}
             {currentPoemSimilars && (
               <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
                 <Button variant="contained" color="info" onClick={handleOnSave}>
