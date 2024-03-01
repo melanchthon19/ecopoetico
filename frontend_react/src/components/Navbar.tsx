@@ -79,12 +79,6 @@ export default function Navbar() {
               >
                 {musicButtonName}
               </Button>
-
-              {currentPoemSimilars && (
-                <Button variant="contained" color="info" onClick={() => setPrint(true)}>
-                  Guardar
-                </Button>
-              )}
             {/* // fin soundmanager */}
             {currentPoemSimilars && (
               <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
