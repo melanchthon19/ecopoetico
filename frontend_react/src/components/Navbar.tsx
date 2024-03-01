@@ -2,23 +2,34 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PoemContext } from './PoemContext';
-import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import Breadcrum from './Breadcrum';
 import PrintPanel from './PrintPanel';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
   const { currentPoemSimilars } = useContext(PoemContext) as PoemContextType;
+  const { showTutorial } = useContext(PoemContext) as PoemContextType;
+  const [showSavePopOver, setShowSavePopOver] = useState(showTutorial);
   const [print, setPrint] = useState(false);
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+
+  const handleOnSave = () => {
+    setShowSavePopOver(false);
+    setPrint(true);
+  };
+
+  useEffect(() => {
+    setShowSavePopOver(showTutorial);
+  }, [showTutorial]);
   
   return (
     <>
-      <AppBar position="static" sx={{backgroundColor: navBarColor}}>
-        <Toolbar sx={{ height: '8vh' }}>
+      <AppBar position="static" sx={{ height: '12vh', backgroundColor: navBarColor, m: 0, p: 0 }}>
+        <Toolbar>
           {/* <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
               <MenuIcon />
             </IconButton> */}
@@ -41,9 +52,11 @@ export default function Navbar() {
               </Box>
             )}
             {currentPoemSimilars && (
-              <Button variant="contained" color="info" onClick={() => setPrint(true)}>
-                Guardar
-              </Button>
+              <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
+                <Button variant="contained" color="info" onClick={handleOnSave}>
+                  Guardar
+                </Button>
+              </Tooltip>
             )}
           </Stack>
         </Toolbar>

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Chip, Drawer, List, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Chip, Drawer, List, Paper, Stack, Typography, Tooltip } from '@mui/material';
 import { useContext, useState } from 'react';
 import { PoemContext } from './PoemContext';
 import PrintListItem from './PrintListItem';
@@ -10,11 +10,13 @@ type PrintBarProps = {
 };
 
 export default function PrintPanel({ print, setPrint }: PrintBarProps) {
-  const { similarPoemsList } = useContext(PoemContext) as PoemContextType;
+  const { similarPoemsList, showTutorial } = useContext(PoemContext) as PoemContextType;
   const uniqueSimilarPoemsList = similarPoemsList.filter((poem, index, self) => index === self.findIndex((t) => t.id === poem.id));
   const [checked, setChecked] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [showPrintPopOver, setShowPrintPopOver] = useState(false);
+  const [hasClickedGenerate, setHasClickedGenerate] = useState(false);
 
   const selectAll = () => {
     setChecked(uniqueSimilarPoemsList.map((poem) => poem.id as number));
@@ -37,6 +39,8 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   };
 
   const handleGenerate = async () => {
+    setHasClickedGenerate(true);
+    setShowPrintPopOver(false);
     setLoading(true);
     try {
       const response = await fetch(`${apiUrl}/api/poems/print`, {
@@ -74,19 +78,25 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
       setLoading(false);
       console.log(error);
     }
-  }
+  };
+
+  const handleDrawerOpen = () => {
+    if (showTutorial && !hasClickedGenerate) {
+      setTimeout(() => setShowPrintPopOver(true), 500);
+    }
+  };
 
   return (
-    <Drawer anchor="right" open={print} onClose={() => setPrint(!print)}>
+    <Drawer onTransitionEnd={handleDrawerOpen} onTransitionEnter={() => setShowPrintPopOver(false)} anchor="right" open={print} onClose={() => setPrint(!print)}>
       <Box height="100%" p={5}>
         <Paper elevation={3} sx={{ p: 3 }}>
           <Typography display="block" mx="auto" fontWeight={700} fontFamily="Merriweather" variant="overline" fontSize={20} align="center">
             Recordar mi camino
           </Typography>
-          <Divider variant="middle" sx={{mb: 2, borderTop: '1px solid rgba(0, 0, 0, 0.87)' }}/>
+          <Divider variant="middle" sx={{ mb: 2, borderTop: '1px solid rgba(0, 0, 0, 0.87)' }} />
           <Stack direction="row" spacing={1} justifyContent="center" mb={1}>
-            <Chip variant='outlined' label="Select All" onClick={selectAll} />
-            <Chip variant='outlined' label="Select None" onClick={deselectAll} />
+            <Chip variant="outlined" label="Todos" onClick={selectAll} />
+            <Chip variant="outlined" label="Ninguno" onClick={deselectAll} />
           </Stack>
           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {uniqueSimilarPoemsList.map((poem: Poem) => {
@@ -94,12 +104,22 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
             })}
           </List>
         </Paper>
-        <Button onClick={handleGenerate} variant="contained" color="error" sx={{ display: 'block', mx: 'auto', my: 3 }}>
-          <Typography fontWeight={700}>Generate</Typography>
+        <Tooltip title="Genera un archivo de texto con los poemas seleccionados" arrow open={showPrintPopOver}>
+        <Button
+          disabled={checked.length == 0}
+          onClick={handleGenerate}
+          variant="contained"
+          color="error"
+          sx={{ display: 'block', mx: 'auto', my: 3 }}
+        >
+          <Typography fontWeight={700}>CREAR</Typography>
         </Button>
+        </Tooltip>
       </Box>
-      <Button component='div' color='info' onClick={() => setPrint(false)} sx={{py: 3}}>Close</Button>
-    <Loading open={loading} />
+      <Button component="div" color="info" onClick={() => setPrint(false)} sx={{ py: 3 }}>
+        Cerrar
+      </Button>
+      <Loading open={loading} />
     </Drawer>
   );
 }
