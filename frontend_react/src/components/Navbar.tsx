@@ -12,8 +12,9 @@ export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
   const { currentPoemSimilars } = useContext(PoemContext) as PoemContextType;
   const { showTutorial } = useContext(PoemContext) as PoemContextType;
-  const [showSavePopOver, setShowSavePopOver] = useState(showTutorial);
+  const [showSavePopOver, setShowSavePopOver] = useState(false);
   const [print, setPrint] = useState(false);
+  const [disableSaveBtn, setDisableSaveBtn] = useState(showTutorial); 
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -23,8 +24,9 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    setShowSavePopOver(showTutorial);
-  }, [showTutorial]);
+      // setShowSavePopOver(showTutorial);
+      setDisableSaveBtn(showTutorial);
+   }, [showTutorial]);
 
   return (
     <>
@@ -48,12 +50,12 @@ export default function Navbar() {
             </motion.div>
             {currentPoemSimilars && (
               <Box>
-                <Breadcrum />
+                <Breadcrum setSavePopOver={setShowSavePopOver} setDisableSaveBtn={setDisableSaveBtn} />
               </Box>
             )}
             {currentPoemSimilars && (
               <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
-                <Button variant="contained" color="info" onClick={handleOnSave}>
+                <Button disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
                   Guardar
                 </Button>
               </Tooltip>

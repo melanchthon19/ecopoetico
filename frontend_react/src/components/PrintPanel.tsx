@@ -10,7 +10,7 @@ type PrintBarProps = {
 };
 
 export default function PrintPanel({ print, setPrint }: PrintBarProps) {
-  const { similarPoemsList, showTutorial } = useContext(PoemContext) as PoemContextType;
+  const { similarPoemsList, showTutorial, setShowTutorial } = useContext(PoemContext) as PoemContextType;
   const uniqueSimilarPoemsList = similarPoemsList.filter((poem, index, self) => index === self.findIndex((t) => t.id === poem.id));
   const [checked, setChecked] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,8 +39,10 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   };
 
   const handleGenerate = async () => {
+    localStorage.setItem('showTutorial', 'false');
+    setShowTutorial(false);
     setHasClickedGenerate(true);
-    setShowPrintPopOver(false);
+    setTimeout( () => setShowPrintPopOver(false), 1000) ;
     setLoading(true);
     try {
       const response = await fetch(`${apiUrl}/api/poems/print`, {

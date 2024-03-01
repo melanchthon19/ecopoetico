@@ -2,7 +2,12 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Tooltip }
 import { useContext, useEffect, useState } from 'react';
 import { PoemContext } from './PoemContext';
 
-export default function Breadcrum() {
+type BreadcrumProps = {
+  setSavePopOver: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisableSaveBtn: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function Breadcrum({ setSavePopOver, setDisableSaveBtn }: BreadcrumProps) {
   const { showTutorial, similarPoemsList, currentPoemSimilars, getSimilarPoems, getAllPoems } = useContext(PoemContext) as PoemContextType;
   const [breadcrumbValue, setBreadcrumbValue] = useState(currentPoemSimilars?.id?.toString());
   const [showBreadcrumbPopOver, setShowBreadcrumbPopOver] = useState(showTutorial);
@@ -23,7 +28,11 @@ export default function Breadcrum() {
 
   const handleOnClick = () => {
     setShowBreadcrumbPopOver(false);
-  }
+    if (showTutorial) {
+      setSavePopOver(true);
+      setDisableSaveBtn(false);
+    }
+    };
 
   return (
     <FormControl variant="standard" sx={{ m: 1, minWidth: 120, maxWidth: 300 }}>
@@ -31,24 +40,31 @@ export default function Breadcrum() {
         Mi Camino
       </InputLabel>
       <Tooltip title="Irás guardando tu camino de poemas a medida que viajas." arrow open={showBreadcrumbPopOver}>
-      <Select labelId="poem-breadcrumb" id="breadcrumb" value={breadcrumbValue} onChange={handleChange} onOpen={handleOnClick} label="Similar Poems ist">
-        <MenuItem divider value="all">
-          <span className="m-auto text-center">------ ALL POEMS ------</span>
-        </MenuItem>
-        {similarPoemsList &&
-          similarPoemsList.map((poem: Poem, index: number) => {
-            return (
-              <MenuItem
-                key={index}
-                value={poem.id as number}
-                divider={poem.id?.toString() == breadcrumbValue}
-                sx={{ fontFamily: 'Quattrocento Sans', fontSize: 16, fontWeight: poem.id?.toString() == breadcrumbValue ? 700 : 400 }}
-              >
-                {poem.title}
-              </MenuItem>
-            );
-          })}
-      </Select>
+        <Select
+          labelId="poem-breadcrumb"
+          id="breadcrumb"
+          value={breadcrumbValue}
+          onChange={handleChange}
+          onOpen={handleOnClick}
+          label="Similar Poems ist"
+        >
+          <MenuItem divider value="all">
+            <span className="m-auto text-center">------ ALL POEMS ------</span>
+          </MenuItem>
+          {similarPoemsList &&
+            similarPoemsList.map((poem: Poem, index: number) => {
+              return (
+                <MenuItem
+                  key={index}
+                  value={poem.id as number}
+                  divider={poem.id?.toString() == breadcrumbValue}
+                  sx={{ fontFamily: 'Quattrocento Sans', fontSize: 16, fontWeight: poem.id?.toString() == breadcrumbValue ? 700 : 400 }}
+                >
+                  {poem.title}
+                </MenuItem>
+              );
+            })}
+        </Select>
       </Tooltip>
     </FormControl>
   );
