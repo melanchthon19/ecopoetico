@@ -1,14 +1,20 @@
 import { useContext, useEffect, useRef } from 'react';
 import { PoemContext } from './PoemContext';
 
-const SoundManager = () => {
-  const apiUrl = import.meta.env.VITE_API_URL;//"http://localhost:8000";//
+type SoundManagerProps = {
+  musicStarted: boolean;
+}
+const SoundManager = ({musicStarted}:SoundManagerProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const audioRef = useRef(new Audio());
   const similarPoemsList  = useContext(PoemContext)
 
   useEffect(() => {
     // Function to play or change the background music
     const playBackgroundMusic = async () => {
+      if (!musicStarted) {
+        return
+      }
       // Stop the previous song
       audioRef.current.pause();
       audioRef.current.src = ''; // Clear the current source

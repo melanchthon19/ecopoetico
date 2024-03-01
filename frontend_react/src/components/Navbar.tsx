@@ -65,7 +65,7 @@ export default function Navbar() {
                 <Breadcrum />
               </Box>
             )}
-            {musicStarted && <SoundManager />}
+            {musicStarted && <SoundManager musicStarted={musicStarted} />}
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
               <Button
               variant="contained"
