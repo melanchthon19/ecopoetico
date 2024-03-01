@@ -8,7 +8,7 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
   const [poems, setPoems] = useState<Poem[]>([]);
   const [myPoems, setMyPoems] = useState<Poem[]>([]);
   const [navBarColor, setNavBarColor] = useState('default');
-
+  const [musicStarted, setMusicStarted] = useState(false);
   const [showTutorial, setShowTutorial] = useState(true);
   const [showTravelPopOver, setShowTravelPopOver] = useState(showTutorial);
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -77,6 +77,8 @@ export default function PoemProvider({ children }: { children: ReactNode }) {
     setShowTutorial,
     showTravelPopOver,
     setShowTravelPopOver,
+    musicStarted,
+    setMusicStarted,
   };
   return <PoemContext.Provider value={contextValue}>{children}</PoemContext.Provider>;
 }

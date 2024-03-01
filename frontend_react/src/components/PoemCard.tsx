@@ -1,8 +1,8 @@
 import { Box, Paper, Tooltip, Typography, Zoom } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useLayoutEffect, useState, useContext } from 'react';
 import PoemDialog from './PoemDialog';
-//import { PoemContext } from './PoemContext'; // Ensure the correct path to your PoemContext
+import { PoemContext } from './PoemContext';
 
 type PoemCardProps = {
   poem: Poem;
@@ -10,7 +10,7 @@ type PoemCardProps = {
 };
 
 export default function PoemCard({ poem, scroll }: PoemCardProps) {
-  const apiUrl = import.meta.env.VITE_API_URL;//"http://localhost:8000";//
+  const apiUrl = import.meta.env.VITE_API_URL;
   const getRandomVerseSplits = () => Math.floor(Math.random() * 3) + 1;
   const getRandomCutPoem = () => Math.floor(Math.random() * poem.content.trim().split(/\n+/).length);
   const getRandomFontSize = () => Math.floor(Math.random() * (24 - 12 + 1)) + 12;
@@ -19,6 +19,7 @@ export default function PoemCard({ poem, scroll }: PoemCardProps) {
   const [formattedContent, setFormattedContent] = useState<JSX.Element[]>([]);
   const [randomCutPoem] = useState(getRandomCutPoem);
   const [randomFontSize] = useState(getRandomFontSize);
+  const { musicStarted } = useContext(PoemContext) as PoemContextType;
 
   useLayoutEffect(() => {
     const keywords = poem.keywords ? poem.keywords.split(' ') : null;
@@ -43,13 +44,15 @@ export default function PoemCard({ poem, scroll }: PoemCardProps) {
     scroll(false);
     
     // Play click sound
-    fetch(`${apiUrl}/api/click-sound/`)
+    if (musicStarted) {
+      fetch(`${apiUrl}/api/click-sound/`)
       .then(response => response.json())
       .then(data => {
         if (data.url) {
           new Audio(data.url).play().catch(err => console.log(err));
         }
       });
+    }
   };
 
   return (

@@ -11,12 +11,13 @@ import SoundManager from './SoundManager';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
-  const { currentPoemSimilars } = useContext(PoemContext) as PoemContextType;
+  const { currentPoemSimilars, musicStarted, setMusicStarted } = useContext(PoemContext) as PoemContextType;
   const { showTutorial } = useContext(PoemContext) as PoemContextType;
   const [showSavePopOver, setShowSavePopOver] = useState(showTutorial);
   const [print, setPrint] = useState(false);
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+  const [musicButtonName, setMusicButtonName] = useState('Play Music');
 
   const handleOnSave = () => {
     setShowSavePopOver(false);
@@ -26,9 +27,6 @@ export default function Navbar() {
   useEffect(() => {
     setShowSavePopOver(showTutorial);
   }, [showTutorial]);
-  
-  const [musicStarted, setMusicStarted] = useState(false); // New state to manage music playback
-  const [musicButtonName, setMusicButtonName] = useState('Play Music');
 
   // Function to handle user click to start music
   const startMusic = () => {
