@@ -7,6 +7,7 @@ import { PoemContext } from './PoemContext';
 import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import Breadcrum from './Breadcrum';
 import PrintPanel from './PrintPanel';
+import SoundManager from './SoundManager';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
@@ -14,7 +15,13 @@ export default function Navbar() {
   const [print, setPrint] = useState(false);
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+  const [musicStarted, setMusicStarted] = useState(false); // New state to manage music playback
   
+  // Function to handle user click to start music
+  const startMusic = () => {
+    setMusicStarted(true);
+  };
+
   return (
     <>
       <AppBar position="static" sx={{backgroundColor: navBarColor}}>
@@ -40,6 +47,22 @@ export default function Navbar() {
                 <Breadcrum />
               </Box>
             )}
+            {/* // agregar soundmanager */}
+            {musicStarted ? <SoundManager /> : (
+                <Button
+                variant="contained"
+                onClick={startMusic}
+                sx={{
+                  backgroundColor: 'orange', // Set the button color to orange
+                  '&:hover': {
+                    backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                  },
+                }}
+              >
+                Start Music
+              </Button>
+              )}
+            {/* // fin soundmanager */}
             {currentPoemSimilars && (
               <Button variant="contained" color="info" onClick={() => setPrint(true)}>
                 Guardar

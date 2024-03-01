@@ -1,17 +1,15 @@
-import { Container, Stack, Button } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import PoemCard from '../components/PoemCard';
 import { useContext, useState } from 'react';
 import Loading from '../components/Loading';
 import { PoemContext } from '../components/PoemContext';
 import SplashScreen from '../components/SplashScreen';
 import EmptyCard from '../components/EmptyCard';
-import SoundManager from '../components/SoundManager';
 
 export default function Home() {
   const [scrollHorizontally, setScrollHorizontally] = useState(true);
   const { poems } = useContext(PoemContext) as PoemContextType;
-  const [musicStarted, setMusicStarted] = useState(false); // New state to manage music playback
-
+  
   const handleHorizontalScroll = (event: any) => {
     const container = event.currentTarget;
     if (scrollHorizontally) {
@@ -19,31 +17,7 @@ export default function Home() {
     }
   };
 
-  // Function to handle user click to start music
-  const startMusic = () => {
-    setMusicStarted(true);
-  };
-
   return (
-    <>
-      {musicStarted ? <SoundManager /> : (
-        <Button
-        variant="contained"
-        onClick={startMusic}
-        sx={{
-          position: 'absolute',
-          top: 16, // Adjust top and right as needed
-          right: 16,
-          zIndex: 1000, // Ensure it's above other content
-          backgroundColor: 'orange', // Set the button color to orange
-          '&:hover': {
-            backgroundColor: 'darkorange', // Darker orange on hover for better UX
-    },
-        }}
-      >
-        Start Music
-      </Button>
-      )}
       <Container
         disableGutters
         maxWidth={false}
@@ -60,6 +34,5 @@ export default function Home() {
           </Stack>
         )}
       </Container>
-    </>
   );
 }
