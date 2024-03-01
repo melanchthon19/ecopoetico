@@ -25,7 +25,7 @@ export default function Navbar() {
   useEffect(() => {
     setShowSavePopOver(showTutorial);
   }, [showTutorial]);
-
+  
   return (
     <>
       <AppBar position="static" sx={{ height: '12vh', backgroundColor: navBarColor, m: 0, p: 0 }}>

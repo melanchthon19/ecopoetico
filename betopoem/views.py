@@ -100,4 +100,25 @@ class PrintPoems(APIView):
 
         #return Response({'result': 'success'}, status=status.HTTP_200_OK)
         return response
-    
+
+class RandomSound(APIView):
+    def get(self, request):
+        # Path where your sound files are stored
+        sound_files_path = 'sounds/poems'
+        sound_files_dir = os.path.join(settings.STATIC_ROOT, sound_files_path)
+        sound_files = [f for f in os.listdir(sound_files_dir) if os.path.isfile(os.path.join(sound_files_dir, f))]
+        
+        if sound_files:
+            random_sound_file = random.choice(sound_files)
+            sound_url = os.path.join(settings.STATIC_URL, sound_files_path, random_sound_file)
+            return Response({'url': sound_url})
+        else:
+            return Response({'error': 'No sound files found'}, status=status.HTTP_404_NOT_FOUND)
+
+class ClickSound(APIView):
+    def get(self, request):
+        # Path to your click sound file
+        sound_click_path = 'sounds/general/warpdown-thehorriblejoke-freesound.mp3'
+        sound_url = os.path.join(settings.STATIC_URL, sound_click_path)
+        return Response({'url': sound_url})
+

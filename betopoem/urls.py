@@ -9,4 +9,6 @@ urlpatterns = [
     path('api/poems/', views.PoemsList.as_view(), name='get_poems'),
     path('api/poems/<str:pid>/similar', views.PoemSimilars.as_view(), name='get_poem'),
     path('api/poems/print', views.PrintPoems.as_view(), name='print_poems'),
+    path('api/random-sound/', views.RandomSound.as_view(), name='random-sound'),
+    path('api/click-sound/', views.ClickSound.as_view(), name='click-sound'),
 ]
