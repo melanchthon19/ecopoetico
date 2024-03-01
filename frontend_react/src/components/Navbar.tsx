@@ -15,7 +15,7 @@ export default function Navbar() {
   const { showTutorial } = useContext(PoemContext) as PoemContextType;
   const [showSavePopOver, setShowSavePopOver] = useState(false);
   const [print, setPrint] = useState(false);
-  const [disableSaveBtn, setDisableSaveBtn] = useState(showTutorial); 
+  const [disableSaveBtn, setDisableSaveBtn] = useState(showTutorial);
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
   const [musicButtonName, setMusicButtonName] = useState('Play Music');
@@ -26,9 +26,9 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-      // setShowSavePopOver(showTutorial);
-      setDisableSaveBtn(showTutorial);
-   }, [showTutorial]);
+    // setShowSavePopOver(showTutorial);
+    setDisableSaveBtn(showTutorial);
+  }, [showTutorial]);
 
   // Function to handle user click to start music
   const startMusic = () => {
@@ -65,30 +65,30 @@ export default function Navbar() {
                 <Breadcrum setSavePopOver={setShowSavePopOver} setDisableSaveBtn={setDisableSaveBtn} />
               </Box>
             )}
-            {musicStarted && <SoundManager musicStarted={musicStarted} />}
+            { musicStarted && <SoundManager musicStarted={musicStarted} /> }
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
               <Button
-              variant="contained"
-              onClick={!musicStarted ? startMusic : stopMusic}
-              sx={{
-                backgroundColor: 'orange', // Set the button color to orange
-                '&:hover': {
-                  backgroundColor: 'darkorange', // Darker orange on hover for better UX
-                },
-              }}
+                variant="contained"
+                onClick={!musicStarted ? startMusic : stopMusic}
+                size={isMdDown ? 'small' : 'large'}
+                sx={{
+                  backgroundColor: 'orange', // Set the button color to orange
+                  '&:hover': {
+                    backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                  },
+                }}
               >
                 {musicButtonName}
               </Button>
-            {/* // fin soundmanager */}
-            {currentPoemSimilars && (
-              <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
-                <Button disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
-                  Guardar
-                </Button>
-              </Tooltip>
-            )}
+              {/* // fin soundmanager */}
+              {currentPoemSimilars && (
+                <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
+                  <Button size={isMdDown ? 'small' : 'large'} disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
+                    Guardar
+                  </Button>
+                </Tooltip>
+              )}
             </Stack>
-            
           </Stack>
         </Toolbar>
       </AppBar>
