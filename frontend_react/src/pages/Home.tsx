@@ -1,6 +1,6 @@
 import { Container, Stack } from '@mui/material';
 import PoemCard from '../components/PoemCard';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Loading from '../components/Loading';
 import { PoemContext } from '../components/PoemContext';
 import SplashScreen from '../components/SplashScreen';
@@ -11,10 +11,7 @@ export default function Home() {
   const [scrollHorizontally, setScrollHorizontally] = useState(true);
   const { poems, showTutorial } = useContext(PoemContext) as PoemContextType;
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(showTutorial);
-  
-  const [scrollHorizontally, setScrollHorizontally] = useState(true);
-  const { poems } = useContext(PoemContext) as PoemContextType;
-  
+    
   const handleHorizontalScroll = (event: any) => {
     const container = event.currentTarget;
     if (scrollHorizontally) {
@@ -35,6 +32,7 @@ export default function Home() {
             {poems.map((poem: Poem, index) => (
               poem.id ? <PoemCard key={poem.id} poem={poem} scroll={setScrollHorizontally} /> : <EmptyCard key={index} />
             ))}
+            <WelcomeDialog show={showWelcomeDialog} setShow={setShowWelcomeDialog}></WelcomeDialog>
           </Stack>
         )}
       </Container>
