@@ -26,12 +26,18 @@ export default function Navbar() {
   useEffect(() => {
     setShowSavePopOver(showTutorial);
   }, [showTutorial]);
-
-  const [musicStarted, setMusicStarted] = useState(false);
   
+  const [musicStarted, setMusicStarted] = useState(false); // New state to manage music playback
+  const [musicButtonName, setMusicButtonName] = useState('Play Music');
+
   // Function to handle user click to start music
   const startMusic = () => {
+    setMusicButtonName('Stop Music');
     setMusicStarted(true);
+  };
+  const stopMusic = () => {
+    setMusicButtonName('Play Music');
+    setMusicStarted(false);
   };
 
   return (
@@ -59,20 +65,25 @@ export default function Navbar() {
                 <Breadcrum />
               </Box>
             )}
-            {/* // agregar soundmanager */}
-            {musicStarted ? <SoundManager /> : (
-                <Button
-                variant="contained"
-                onClick={startMusic}
-                sx={{
-                  backgroundColor: 'orange', // Set the button color to orange
-                  '&:hover': {
-                    backgroundColor: 'darkorange', // Darker orange on hover for better UX
-                  },
-                }}
+            {musicStarted && <SoundManager />}
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
+              <Button
+              variant="contained"
+              onClick={!musicStarted ? startMusic : stopMusic}
+              sx={{
+                backgroundColor: 'orange', // Set the button color to orange
+                '&:hover': {
+                  backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                },
+              }}
               >
-                Start Music
+                {musicButtonName}
               </Button>
+
+              {currentPoemSimilars && (
+                <Button variant="contained" color="info" onClick={() => setPrint(true)}>
+                  Guardar
+                </Button>
               )}
             {/* // fin soundmanager */}
             {currentPoemSimilars && (
@@ -82,6 +93,8 @@ export default function Navbar() {
                 </Button>
               </Tooltip>
             )}
+            </Stack>
+            
           </Stack>
         </Toolbar>
       </AppBar>
