@@ -51,7 +51,7 @@ export default function Navbar() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
               <a href="/">
                 <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-start">
-                  <img src="/static/assets/logo-tp_color.png" alt="logo" width="50px" />
+                  <img src={`${import.meta.env.VITE_BASE_URL}assets/logo-tp_color.png`} alt="logo" width="50px" />
                   {currentPoemSimilars && isMdDown ? null : (
                     <Typography variant="h4" fontFamily="Londrina Outline" fontWeight="bold" component="div" align="left">
                       ÉCOPOÉTICO
@@ -65,7 +65,7 @@ export default function Navbar() {
                 <Breadcrum setSavePopOver={setShowSavePopOver} setDisableSaveBtn={setDisableSaveBtn} />
               </Box>
             )}
-            { musicStarted && <SoundManager musicStarted={musicStarted} /> }
+            {musicStarted && <SoundManager musicStarted={musicStarted} />}
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
               <Button
                 variant="contained"

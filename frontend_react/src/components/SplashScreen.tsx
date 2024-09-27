@@ -24,11 +24,11 @@ export default function SplashScreen() {
       <motion.div
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
-        transition={{ delay: 2, duration: 3, ease: "linear"}}
+        transition={{ delay: 2, duration: 3, ease: 'linear' }}
         onAnimationComplete={handleAnimationComplete}
       >
         <motion.img
-          src="/static/assets/ecopoetico-logoFULL-tp.png"
+          src={`${import.meta.env.VITE_BASE_URL}assets/ecopoetico-logoFULL-tp.png`}
           width="250"
           alt="ECOPOETICO LOGO"
           initial={{ opacity: 0, x: -15, y: -5 }}
