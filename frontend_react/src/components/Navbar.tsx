@@ -4,10 +4,11 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 import { PoemContext } from './PoemContext';
-import { Box, Button, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Chip, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import Breadcrum from './Breadcrum';
 import PrintPanel from './PrintPanel';
 import SoundManager from './SoundManager';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
@@ -67,6 +68,7 @@ export default function Navbar() {
             )}
             {musicStarted && <SoundManager musicStarted={musicStarted} />}
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
+              <Link to="/quienes-somos"><Chip label="Quiénes Somos" clickable /></Link> 
               <Button
                 variant="contained"
                 onClick={!musicStarted ? startMusic : stopMusic}

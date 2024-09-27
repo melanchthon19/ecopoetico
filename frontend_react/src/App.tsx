@@ -7,6 +7,7 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import Navbar from './components/Navbar';
 import PoemProvider from './components/PoemContext';
+import AboutUs from './pages/AboutUs';
 
 const theme = createTheme({
   typography: {
@@ -36,10 +37,11 @@ function App() {
   return (
     <CssBaseline>
       <ThemeProvider theme={theme}>
-        <BrowserRouter basename='/'>
+        <BrowserRouter basename="/">
           <PoemProvider>
-            <Navbar/>
+            <Navbar />
             <Routes>
+              <Route path="/quienes-somos" element={<AboutUs />} />
               <Route path="/" element={<Home />} />
             </Routes>
           </PoemProvider>
