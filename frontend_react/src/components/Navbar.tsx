@@ -8,7 +8,7 @@ import { Box, Button, Chip, Stack, Tooltip, useMediaQuery, useTheme } from '@mui
 import Breadcrum from './Breadcrum';
 import PrintPanel from './PrintPanel';
 import SoundManager from './SoundManager';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
@@ -19,7 +19,11 @@ export default function Navbar() {
   const [disableSaveBtn, setDisableSaveBtn] = useState(showTutorial);
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const isXsDown = useMediaQuery('(min-width:480px)');
   const [musicButtonName, setMusicButtonName] = useState('Play Music');
+  const location = useLocation();
+  const isQuienesSomosPage = location.pathname === '/quienes-somos';
 
   const handleOnSave = () => {
     setShowSavePopOver(false);
@@ -52,23 +56,32 @@ export default function Navbar() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
               <a href="/">
                 <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-start">
-                  <img src={`${import.meta.env.VITE_BASE_URL}assets/logo-tp_color.png`} alt="logo" width="50px" />
-                  {currentPoemSimilars && isMdDown ? null : (
-                    <Typography variant="h4" fontFamily="Londrina Outline" fontWeight="bold" component="div" align="left">
+                  <img src={`${import.meta.env.VITE_BASE_URL}assets/logo-tp_color.png`} alt="logo" width={!isXsDown ? '25px' : '50px'} />
+                  {currentPoemSimilars && isMdDown && !isQuienesSomosPage ? null : (
+                    <Typography
+                      variant="h4"
+                      fontFamily="Londrina Outline"
+                      fontWeight="bold"
+                      component="div"
+                      align="left"
+                      sx={{ fontSize: isSmDown ? '1.5rem' : '2rem' }}
+                    >
                       ÉCOPOÉTICO
                     </Typography>
                   )}
                 </Stack>
               </a>
             </motion.div>
-            {currentPoemSimilars && (
+            {currentPoemSimilars && !isQuienesSomosPage && (
               <Box>
                 <Breadcrum setSavePopOver={setShowSavePopOver} setDisableSaveBtn={setDisableSaveBtn} />
               </Box>
             )}
             {musicStarted && <SoundManager musicStarted={musicStarted} />}
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
-              <Link to="/quienes-somos"><Chip label="Quiénes Somos" clickable /></Link> 
+              <Link to="/quienes-somos">
+                <Chip label="Quiénes Somos" clickable size={ isMdDown ? "small" : "medium" } />
+              </Link>
               <Button
                 variant="contained"
                 onClick={!musicStarted ? startMusic : stopMusic}
@@ -82,8 +95,9 @@ export default function Navbar() {
               >
                 {musicButtonName}
               </Button>
+
               {/* // fin soundmanager */}
-              {currentPoemSimilars && (
+              {currentPoemSimilars && !isQuienesSomosPage && (
                 <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
                   <Button size={isMdDown ? 'small' : 'large'} disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
                     Guardar
