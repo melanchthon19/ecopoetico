@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'betopoem',
+    'process_corpus',
 ]
 
 MIDDLEWARE = [
