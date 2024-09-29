@@ -16,7 +16,7 @@ export default function Loading({ open }: { open: boolean }) {
             ease: 'linear',
           }}
         >
-          <img src={`${import.meta.env.VITE_BASE_URL}assets/logo-tp_grayscale.png`} alt="logo" width="100" />
+          <img src={`${import.meta.env.VITE_BASE_URL}assets/ecopoetico-grayscale.png`} alt="logo" width="300" />
         </motion.div>
         <div>
           {/* <CircularProgress color="inherit" sx={{ mx: 2 }} /> */}

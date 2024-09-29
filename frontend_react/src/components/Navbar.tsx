@@ -48,28 +48,14 @@ export default function Navbar() {
   return (
     <>
       <AppBar position="static" sx={{ height: '12vh', backgroundColor: navBarColor, m: 0, p: 0 }}>
-        <Toolbar>
+        <Toolbar sx={{height: '12vh'}}>
           {/* <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
               <MenuIcon />
             </IconButton> */}
           <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%" height="100%">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
               <a href="/">
-                <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-start">
-                  <img src={`${import.meta.env.VITE_BASE_URL}assets/logo-tp_color.png`} alt="logo" width={!isXsDown ? '25px' : '50px'} />
-                  {currentPoemSimilars && isMdDown && !isQuienesSomosPage ? null : (
-                    <Typography
-                      variant="h4"
-                      fontFamily="Londrina Outline"
-                      fontWeight="bold"
-                      component="div"
-                      align="left"
-                      sx={{ fontSize: isSmDown ? '1.5rem' : '2rem' }}
-                    >
-                      ÉCOPOÉTICO
-                    </Typography>
-                  )}
-                </Stack>
+                <img src={`${import.meta.env.VITE_BASE_URL}assets/ecopoetico-newlogo.png`} alt="logo" width={!isXsDown ? '100px' : '175px'} />
               </a>
             </motion.div>
             {currentPoemSimilars && !isQuienesSomosPage && (
@@ -78,9 +64,20 @@ export default function Navbar() {
               </Box>
             )}
             {musicStarted && <SoundManager musicStarted={musicStarted} />}
-            <Stack direction="row" alignItems="center" justifyContent="center" spacing={3}>
+            <Stack direction="row" alignItems="center" justifyContent="left" spacing={3} marginLeft={3}>
               <Link to="/quienes-somos">
-                <Chip label="Quiénes Somos" clickable size={ isMdDown ? "small" : "medium" } />
+                <Button
+                  variant="contained"
+                  size={isMdDown ? 'small' : 'large'}
+                  sx={{
+                    backgroundColor: 'orange', // Set the button color to orange
+                    '&:hover': {
+                      backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                    },
+                  }}
+                >
+                  Quiénes Somos
+                </Button>
               </Link>
               <Button
                 variant="contained"
