@@ -1,14 +1,13 @@
+import { Box, Button, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
-import { PoemContext } from './PoemContext';
-import { Box, Button, Chip, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import Breadcrum from './Breadcrum';
+import { PoemContext } from './PoemContext';
 import PrintPanel from './PrintPanel';
 import SoundManager from './SoundManager';
-import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
@@ -19,7 +18,7 @@ export default function Navbar() {
   const [disableSaveBtn, setDisableSaveBtn] = useState(showTutorial);
   const theme = useTheme();
   const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
-  const isSmDown = useMediaQuery(theme.breakpoints.down('sm'));
+  // const isSmDown = useMediaQuery(theme.breakpoints.down('sm'));
   const isXsDown = useMediaQuery('(min-width:480px)');
   const [musicButtonName, setMusicButtonName] = useState('Play Music');
   const location = useLocation();
