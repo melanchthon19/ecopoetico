@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Menu, MenuItem, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import { Backdrop, Box, Button, IconButton, Menu, MenuItem, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { motion } from 'framer-motion';
@@ -9,6 +9,7 @@ import { PoemContext } from './PoemContext';
 import PrintPanel from './PrintPanel';
 import SoundManager from './SoundManager';
 import MenuIcon from '@mui/icons-material/Menu';
+import TutorialAnimatedBorder from './Tutorial/TutorialAnimatedBorder';
 
 export default function Navbar() {
   const { navBarColor } = useContext(PoemContext) as PoemContextType;
@@ -56,6 +57,7 @@ export default function Navbar() {
 
   return (
     <>
+    <Backdrop sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })} open={showSavePopOver}></Backdrop>
       <AppBar position="static" sx={{ height: '12vh', backgroundColor: navBarColor, m: 0, p: 0 }}>
         <Toolbar sx={{ height: '12vh' }}>
           {/* <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
@@ -121,9 +123,9 @@ export default function Navbar() {
                   {musicButtonName}
                 </Button>
               </MenuItem>
-              {currentPoemSimilars && !isQuienesSomosPage && (
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver} sx={{ display: { xs: 'flex', md: 'none' } }}>
+              {currentPoemSimilars && !isQuienesSomosPage && isMdDown && (
+                <MenuItem onClick={handleCloseNavMenu} sx={{ display: { xs: 'flex', md: 'none' } }}>
+                  <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
                     <Button size={isMdDown ? 'small' : 'large'} disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
                       Guardar
                     </Button>
@@ -176,12 +178,23 @@ export default function Navbar() {
               </Button>
 
               {/* // fin soundmanager */}
-              {currentPoemSimilars && !isQuienesSomosPage && (
-                <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver} sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  <Button size={isMdDown ? 'small' : 'large'} disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
-                    Guardar
-                  </Button>
-                </Tooltip>
+              
+              {currentPoemSimilars && !isQuienesSomosPage && !isMdDown && (
+                <>
+                  <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
+                    <Button
+                      size={isMdDown ? 'small' : 'large'}
+                      disabled={disableSaveBtn}
+                      variant="contained"
+                      color="info"
+                      onClick={handleOnSave}
+                      sx={(theme) => ({ color: '#fff', zIndex: showSavePopOver ? theme.zIndex.drawer + 2 : 0 })}
+                    >
+                      Guardar
+                     { showSavePopOver && <TutorialAnimatedBorder />}
+                    </Button>
+                  </Tooltip>
+                </>
               )}
             </Stack>
           </Stack>
