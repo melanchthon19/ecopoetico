@@ -12,6 +12,10 @@ CORPUS_PREP_PATH = os.path.join(BASE_DIR, 'process_corpus/corpus_prep')
 MAPPING_FILE = os.path.join(BASE_DIR, 'process_corpus/similarity/original_to_formatted_titles.csv')
 KEYWORDS_CSV_PATH = os.path.join(BASE_DIR, 'process_corpus/similarity/keywords_tfidf_by_author.csv')
 SIMILARITY_CSV_PATH = os.path.join(BASE_DIR, 'process_corpus/similarity/similarity_matrix.csv')
+UPDATED_SIMILARITY_CSV_PATH = os.path.join(BASE_DIR, 'process_corpus/similarity/similarity_matrix_with_slugs.csv')
+
+# Dictionary to store poem slugs for easier reference later
+poem_slugs = {}
 
 def load_title_mapping(mapping_file):
     """Load the mapping between formatted titles and original titles."""
@@ -22,6 +26,7 @@ def load_title_mapping(mapping_file):
             author = row['author']
             formatted_title = row['formatted_title'].replace('.txt', '')  # Remove .txt extension for slugs
             original_title = row['original_title']
+            # Ensure slug consistency: author-formattedtitle (author and title without special chars)
             title_mapping[f"{author}-{formatted_title}"] = original_title
     return title_mapping
 
@@ -35,32 +40,85 @@ def load_keywords(keywords_file):
             keywords_mapping[poem_slug] = row['keywords']
     return keywords_mapping
 
-def load_similarity(similarity_file):
-    """Load similarity matrix from CSV."""
+def generate_slug(author, formatted_title):
+    """Generate a consistent slug for the poem."""
+    return f"{author}-{formatted_title}"
+
+def update_similarity_csv_with_slugs(similarity_file, output_file):
+    """Load the similarity matrix, generate slugs, and add a new column with the generated slugs."""
+    updated_rows = []
+    
+    with open(similarity_file, mode='r', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        fieldnames = reader.fieldnames + ['slug']  # Add a new column for the slug
+        
+        for row in reader:
+            # Generate the slug for each poem based on the author and title
+            poem_slug = row['poem'].replace('.pt', '')  # Clean the poem slug
+            slug_parts = poem_slug.split('/')  # Split author and title
+            author, formatted_title = slug_parts[0], slug_parts[1]
+            generated_slug = generate_slug(author, formatted_title)
+            
+            # Add the generated slug to the row
+            row['slug'] = generated_slug
+            
+            # Store the slug for later use in similarity relationships
+            poem_slugs[poem_slug] = generated_slug
+            
+            updated_rows.append(row)
+    
+    # Write the updated CSV with the new slug column
+    with open(output_file, mode='w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(updated_rows)
+    
+    print(f"Updated similarity CSV with slugs saved to {output_file}")
+
+def load_similarity_with_slugs(similarity_file):
+    """Load the updated similarity matrix with slugs from the CSV."""
     similarity_mapping = {}
+    
     with open(similarity_file, mode='r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            poem_slug = row['poem'].replace('.pt', '')  # Remove .pt extension from similarity matrix slugs
-            similar_poems = [row[f"top_{i+1}_similar"].replace('.pt', '') for i in range(30) if row[f"top_{i+1}_similar"]]
-            similarity_mapping[poem_slug] = similar_poems
+            poem_slug = row['slug']  # Use the generated slug from the new column
+            # Create a list of similar poems (up to 30)
+            similar_poems = [poem_slugs.get(row[f"top_{i+1}_similar"].replace('.pt', ''), None) for i in range(30) if row[f"top_{i+1}_similar"]]
+            similarity_mapping[poem_slug] = [s for s in similar_poems if s]  # Filter out None values
     return similarity_mapping
 
 class Command(BaseCommand):
-    help = "Uploads poems to the corpus"
+    help = "Uploads poems to the corpus, ensuring slugs are consistent"
 
     def handle(self, *args, **options):
+        # Step 0: Clean the PoemCorpus table before uploading new data
+        clean_corpus()
+        print("PoemCorpus table cleaned.")
+
+        # Step 1: Update similarity CSV with slugs
+        update_similarity_csv_with_slugs(SIMILARITY_CSV_PATH, UPDATED_SIMILARITY_CSV_PATH)
+        
+        # Step 2: Upload poems without similarity relationships
         upload_poems()
-        print("All data uploaded successfully.")
+        print("First pass: all poems uploaded.")
+        
+        # Step 3: Upload similarity relationships using updated slugs
+        upload_similarities()
+        print("Second pass: all similarity relationships added.")
+
+def clean_corpus():
+    """Delete all entries in the PoemCorpus model to start fresh."""
+    PoemCorpus.objects.all().delete()
+    print("All existing poems deleted from the database.")
 
 def upload_poems():
     """Upload poems from the corpus_prep folder to the PoemCorpus model."""
     print("Uploading poems from 'corpus_prep'...")
 
-    # Load the title mapping, keywords, and similarities
+    # Load the title mapping and keywords
     title_mapping = load_title_mapping(MAPPING_FILE)
     keywords_mapping = load_keywords(KEYWORDS_CSV_PATH)
-    similarity_mapping = load_similarity(SIMILARITY_CSV_PATH)
 
     # Iterate through each author folder in the corpus_prep directory
     for author in os.listdir(CORPUS_PREP_PATH):
@@ -76,7 +134,7 @@ def upload_poems():
                         content = f.read()
 
                     # Create the slug as author-formattedtitle
-                    slug = f"{author}-{formatted_title}"
+                    slug = generate_slug(author, formatted_title)
 
                     # Look up the original title in the title mapping
                     original_title = title_mapping.get(slug, formatted_title.replace('-', ' ').title())
@@ -93,16 +151,28 @@ def upload_poems():
                         )
                         poem_instance.save()
 
-                        # Add similarity relationships
-                        similar_slugs = similarity_mapping.get(slug, [])
-                        for similar_slug in similar_slugs:
-                            try:
-                                similar_poem = PoemCorpus.objects.get(slug=similar_slug)
-                                poem_instance.similars.add(similar_poem)
-                            except PoemCorpus.DoesNotExist:
-                                print(f"Similar poem with slug '{similar_slug}' not found for '{slug}'")
-
-                        poem_instance.save()
-                        print(f"Poem '{original_title}' by {author} uploaded with keywords and similar poems.")
+                        print(f"Poem '{original_title}' by {author} uploaded.")
                     else:
                         print(f"Poem '{original_title}' by {author} already exists.")
+
+def upload_similarities():
+    """Second pass: add similarity relationships after all poems have been uploaded."""
+    print("Adding similarity relationships...")
+    
+    # Load the updated similarity data with slugs
+    similarity_mapping = load_similarity_with_slugs(UPDATED_SIMILARITY_CSV_PATH)
+
+    # Iterate through the similarity relationships
+    for slug, similar_slugs in similarity_mapping.items():
+        try:
+            poem_instance = PoemCorpus.objects.get(slug=slug)
+            for similar_slug in similar_slugs:
+                try:
+                    similar_poem = PoemCorpus.objects.get(slug=similar_slug)
+                    poem_instance.similars.add(similar_poem)
+                    print(f"Added similar poem '{similar_slug}' to '{slug}'")
+                except PoemCorpus.DoesNotExist:
+                    print(f"Similar poem with slug '{similar_slug}' not found for '{slug}'")
+            poem_instance.save()
+        except PoemCorpus.DoesNotExist:
+            print(f"Poem with slug '{slug}' not found during similarity upload.")

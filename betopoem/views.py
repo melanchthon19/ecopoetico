@@ -57,21 +57,16 @@ class ReactTemplateView(generic.TemplateView):
     template_name = 'dist/index.html'  # Replace 'your_react_template.html' with the path to your React index.html
 
 class PoemsList(APIView):
-    def get(self, request):
+    def get(self, request):      
+        N_poems = 100
         random_param = request.query_params.get('random')
-
+        
         if random_param == 'true':
             poems = PoemCorpus.objects.order_by('?').all()
-            # preprocessing
-            # for poem in poems:
-            #     lines = poem.content.split('\n')
-            #     lines = [l for l in lines if l != '' and l != 'I']
-            #     poem.content = '\n'.join(lines)
-            # this changes poem.content displayed
         else:
             poems = PoemCorpus.objects.order_by('title').all()
 
-        serializer = PoemCorpusSerializer(poems, many=True)
+        serializer = PoemCorpusSerializer(poems[:N_poems], many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class PoemSimilars(APIView):
