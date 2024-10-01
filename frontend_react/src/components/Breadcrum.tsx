@@ -1,17 +1,21 @@
-import { Backdrop, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Tooltip } from '@mui/material';
+import { Backdrop, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { PoemContext } from './PoemContext';
 import TutorialAnimatedBorder from './Tutorial/TutorialAnimatedBorder';
 
 type BreadcrumProps = {
-  setSavePopOver: React.Dispatch<React.SetStateAction<boolean>>;
+  setBurguerMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setDisableSaveBtn: React.Dispatch<React.SetStateAction<boolean>>;
+  setHasClickedBreadCrumbs: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowSavePopOver: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Breadcrum({ setSavePopOver, setDisableSaveBtn }: BreadcrumProps) {
+export default function Breadcrum({ setBurguerMenu, setDisableSaveBtn, setHasClickedBreadCrumbs, setShowSavePopOver }: BreadcrumProps) {
   const { showTutorial, similarPoemsList, currentPoemSimilars, getSimilarPoems, getAllPoems } = useContext(PoemContext) as PoemContextType;
   const [breadcrumbValue, setBreadcrumbValue] = useState(currentPoemSimilars?.id?.toString());
   const [showBreadcrumbPopOver, setShowBreadcrumbPopOver] = useState(showTutorial);
+  const theme = useTheme();
+  const isMdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     setBreadcrumbValue(currentPoemSimilars?.id?.toString());
@@ -30,8 +34,13 @@ export default function Breadcrum({ setSavePopOver, setDisableSaveBtn }: Breadcr
   const handleOnClick = () => {
     setShowBreadcrumbPopOver(false);
     if (showTutorial) {
-      setSavePopOver(true);
       setDisableSaveBtn(false);
+      setHasClickedBreadCrumbs(true);
+      if (!isMdDown) {
+        setShowSavePopOver(true);
+      } else {
+        setBurguerMenu(true);
+      }
     }
   };
 

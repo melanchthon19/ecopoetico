@@ -2,7 +2,7 @@ import { Backdrop, Box, Button, IconButton, Menu, MenuItem, Stack, Tooltip, useM
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Breadcrum from './Breadcrum';
 import { PoemContext } from './PoemContext';
@@ -26,10 +26,18 @@ export default function Navbar() {
   const location = useLocation();
   const isQuienesSomosPage = location.pathname === '/quienes-somos';
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const menuButtonRef = useRef(null);
+  const [burguerMenu, setBurguerMenu] = useState(false);
+  const [hasClickedBreadCrumbs, setHasClickedBreadCrumbs] = useState(false);
+  const [hasClickedSave, setHasClickedSave] = useState(false);
 
   const handleOnSave = () => {
+    setHasClickedSave(true);
     setShowSavePopOver(false);
     setPrint(true);
+    if (isMdDown) {
+      setBurguerMenu(false);
+    }
   };
 
   useEffect(() => {
@@ -48,92 +56,108 @@ export default function Navbar() {
   };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setBurguerMenu(true);
     setAnchorElNav(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
+    if (showSavePopOver) return;
     setAnchorElNav(null);
+    setBurguerMenu(false);
+  };
+
+  const handleMenuBurguerOpen = () => {
+    if (showTutorial && hasClickedBreadCrumbs && !hasClickedSave) {
+      setTimeout(() => setShowSavePopOver(true), 500);
+    }
   };
 
   return (
     <>
-    <Backdrop sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })} open={showSavePopOver}></Backdrop>
+      <Backdrop sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 2 })} open={showSavePopOver}></Backdrop>
       <AppBar position="static" sx={{ height: '12vh', backgroundColor: navBarColor, m: 0, p: 0 }}>
         <Toolbar sx={{ height: '12vh' }}>
-          {/* <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-              <MenuIcon />
-            </IconButton> */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="ecopoetico menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
-            >
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link to="/quienes-somos">
+          {isMdDown && (
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="ecopoetico menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+                ref={menuButtonRef}
+                sx={{ backgroundColor: showSavePopOver ? 'rgba(255, 0, 0, 0.5)' : 'transparent' }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={showTutorial ? menuButtonRef.current : anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={burguerMenu}
+                onClose={handleCloseNavMenu}
+                sx={{ display: { xs: 'block', md: 'none' } }}
+                onTransitionEnd={handleMenuBurguerOpen}
+              >
+                {!showTutorial && (
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Link to="/quienes-somos">
+                      <Button
+                        variant="contained"
+                        size={isMdDown ? 'small' : 'large'}
+                        disabled={showTutorial ? true : false}
+                        sx={{
+                          backgroundColor: 'orange', // Set the button color to orange
+                          '&:hover': {
+                            backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                          },
+                          display: { xs: 'flex', md: 'none' },
+                        }}
+                      >
+                        Quiénes Somos
+                      </Button>
+                    </Link>
+                  </MenuItem>
+                )}
+                <MenuItem onClick={handleCloseNavMenu}>
                   <Button
                     variant="contained"
+                    onClick={!musicStarted ? startMusic : stopMusic}
+                    disabled={showTutorial ? true : false}
                     size={isMdDown ? 'small' : 'large'}
                     sx={{
+                      display: { xs: 'flex', md: 'none' },
                       backgroundColor: 'orange', // Set the button color to orange
                       '&:hover': {
                         backgroundColor: 'darkorange', // Darker orange on hover for better UX
                       },
-                      display: { xs: 'flex', md: 'none' },
                     }}
                   >
-                    Quiénes Somos
+                    {musicButtonName}
                   </Button>
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Button
-                  variant="contained"
-                  onClick={!musicStarted ? startMusic : stopMusic}
-                  size={isMdDown ? 'small' : 'large'}
-                  sx={{
-                    display: { xs: 'flex', md: 'none' },
-                    backgroundColor: 'orange', // Set the button color to orange
-                    '&:hover': {
-                      backgroundColor: 'darkorange', // Darker orange on hover for better UX
-                    },
-                  }}
-                >
-                  {musicButtonName}
-                </Button>
-              </MenuItem>
-              {currentPoemSimilars && !isQuienesSomosPage && isMdDown && (
-                <MenuItem onClick={handleCloseNavMenu} sx={{ display: { xs: 'flex', md: 'none' } }}>
-                  <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
-                    <Button size={isMdDown ? 'small' : 'large'} disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
-                      Guardar
-                    </Button>
-                  </Tooltip>
                 </MenuItem>
-              )}
-            </Menu>
-          </Box>
+                {currentPoemSimilars && !isQuienesSomosPage && isMdDown && (
+                  <MenuItem onClick={handleCloseNavMenu} sx={{ display: { xs: 'flex', md: 'none' } }}>
+                    <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver} placement="bottom">
+                      <Button size={isMdDown ? 'small' : 'large'} disabled={disableSaveBtn} variant="contained" color="info" onClick={handleOnSave}>
+                        Guardar
+                        {showSavePopOver && <TutorialAnimatedBorder />}
+                      </Button>
+                    </Tooltip>
+                  </MenuItem>
+                )}
+              </Menu>
+            </Box>
+          )}
           <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%" height="100%">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 2 }}>
               <a href="/">
@@ -142,29 +166,38 @@ export default function Navbar() {
             </motion.div>
             {currentPoemSimilars && !isQuienesSomosPage && (
               <Box>
-                <Breadcrum setSavePopOver={setShowSavePopOver} setDisableSaveBtn={setDisableSaveBtn} />
+                <Breadcrum
+                  setHasClickedBreadCrumbs={setHasClickedBreadCrumbs}
+                  setBurguerMenu={setBurguerMenu}
+                  setDisableSaveBtn={setDisableSaveBtn}
+                  setShowSavePopOver={setShowSavePopOver}
+                />
               </Box>
             )}
             {musicStarted && <SoundManager musicStarted={musicStarted} />}
             <Stack direction="row" alignItems="center" justifyContent="left" spacing={3} marginLeft={3}>
-              <Link to="/quienes-somos">
-                <Button
-                  variant="contained"
-                  size={isMdDown ? 'small' : 'large'}
-                  sx={{
-                    backgroundColor: 'orange', // Set the button color to orange
-                    '&:hover': {
-                      backgroundColor: 'darkorange', // Darker orange on hover for better UX
-                    },
-                    display: { xs: 'none', md: 'flex' },
-                  }}
-                >
-                  Quiénes Somos
-                </Button>
-              </Link>
+              {!showTutorial && (
+                <Link to="/quienes-somos">
+                  <Button
+                    variant="contained"
+                    size={isMdDown ? 'small' : 'large'}
+                    disabled={showTutorial ? true : false}
+                    sx={{
+                      backgroundColor: 'orange', // Set the button color to orange
+                      '&:hover': {
+                        backgroundColor: 'darkorange', // Darker orange on hover for better UX
+                      },
+                      display: { xs: 'none', md: 'flex' },
+                    }}
+                  >
+                    Quiénes Somos
+                  </Button>
+                </Link>
+              )}
               <Button
                 variant="contained"
                 onClick={!musicStarted ? startMusic : stopMusic}
+                disabled={showTutorial ? true : false}
                 size={isMdDown ? 'small' : 'large'}
                 sx={{
                   display: { xs: 'none', md: 'flex' },
@@ -178,7 +211,7 @@ export default function Navbar() {
               </Button>
 
               {/* // fin soundmanager */}
-              
+
               {currentPoemSimilars && !isQuienesSomosPage && !isMdDown && (
                 <>
                   <Tooltip title="Puedes guardar tu recorrido aquí" arrow open={showSavePopOver}>
@@ -191,7 +224,7 @@ export default function Navbar() {
                       sx={(theme) => ({ color: '#fff', zIndex: showSavePopOver ? theme.zIndex.drawer + 2 : 0 })}
                     >
                       Guardar
-                     { showSavePopOver && <TutorialAnimatedBorder />}
+                      {showSavePopOver && <TutorialAnimatedBorder />}
                     </Button>
                   </Tooltip>
                 </>
