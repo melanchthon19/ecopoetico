@@ -6,10 +6,11 @@ type PrintListItemProps = {
   poem: Poem;
   handleToggle: (value: number) => void;
   checked: number[];
+  showTutorial: boolean;
 }
 
 
-export default function PrintListItem({poem, handleToggle, checked} : PrintListItemProps) {
+export default function PrintListItem({poem, handleToggle, checked, showTutorial} : PrintListItemProps) {
   const labelId = `checkbox-list-secondary-label-${poem.id}`;
   const [open, setOpen] = useState(false);
   const handleCheckBoxClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -26,7 +27,7 @@ export default function PrintListItem({poem, handleToggle, checked} : PrintListI
           onClick={handleCheckBoxClick}
           value={poem.id}
           onChange={() => handleToggle(poem.id as number)}
-          checked={checked.indexOf(poem.id as number) !== -1}
+          checked={showTutorial ? true : checked.indexOf(poem.id as number) !== -1}
           inputProps={{ 'aria-labelledby': labelId }}
         />
       }

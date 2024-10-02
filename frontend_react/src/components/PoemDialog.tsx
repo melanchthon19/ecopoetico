@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, Box, Button, Stack, Tooltip } from '@mui/material';
+import { Backdrop, Box, Button, IconButton, Stack, Tooltip } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import { Dispatch, SetStateAction, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PoemContext } from './PoemContext';
+import TutorialAnimatedBorder from './Tutorial/TutorialAnimatedBorder';
 
 type PoemDialogProps = {
   poem: Poem;
@@ -20,8 +21,7 @@ export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogPr
   const [formattedContent, setFormattedContent] = useState<JSX.Element[]>([]);
   const { addPoemSimilars, getSimilarPoems } = useContext(PoemContext) as PoemContextType;
   const travelButton = useRef<HTMLButtonElement>(null);
-  const {showTravelPopOver, setShowTravelPopOver} = useContext(PoemContext) as PoemContextType;
-
+  const { showTravelPopOver, setShowTravelPopOver } = useContext(PoemContext) as PoemContextType;
 
   const handleClose = () => {
     setOpen(false);
@@ -99,9 +99,17 @@ export default function PoemDialog({ poem, open, setOpen, scroll }: PoemDialogPr
         </DialogContent>
         <DialogActions>
           <Stack direction="row" spacing={5} justifyContent="space-between" alignItems="center" width="100%" paddingX={5}>
+            <Backdrop sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })} open={showTravelPopOver}></Backdrop>
             <Tooltip title="Puedes viajar a través de los poemas y ver dónde te dirige." arrow open={showTravelPopOver}>
-              <Button ref={travelButton} color="info" variant="contained" onClick={handleSimilars}>
+              <Button
+                ref={travelButton}
+                color="info"
+                variant="contained"
+                onClick={handleSimilars}
+                sx={(theme) => ({ zIndex: theme.zIndex.drawer + 2 })}
+              >
                 Viajar
+                {showTravelPopOver && <TutorialAnimatedBorder />}
               </Button>
             </Tooltip>
             <Typography fontWeight={400} fontFamily="Playfair Display" fontSize={20} variant="body1" color="black">

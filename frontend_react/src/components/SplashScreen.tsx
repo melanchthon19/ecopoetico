@@ -21,14 +21,18 @@ export default function SplashScreen() {
 
   return (
     <Backdrop open={open} sx={{ backgroundColor: theme.palette.mode == 'light' ? 'white' : 'black' }} style={{ zIndex: 9999 }}>
-      <motion.div initial={{ opacity: 1 }} animate={{ opacity: 0 }} transition={{ delay: 2, duration: 2, ease: 'linear' }}>
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
+        transition={{ delay: 2, duration: 3, ease: 'linear' }}
+        onAnimationComplete={handleAnimationComplete}
+      >
         <motion.img
           src={`${import.meta.env.VITE_BASE_URL}assets/ecopoetico-fulllogo.png`}
           width="350"
           alt="ECOPOETICO LOGO"
           initial={{ opacity: 0, x: -15, y: -5 }}
           animate={{ opacity: 1, x: 0, y: 0, transition: { delay: 0.5, duration: 1 } }}
-          onAnimationComplete={handleAnimationComplete}
         />
       </motion.div>
     </Backdrop>

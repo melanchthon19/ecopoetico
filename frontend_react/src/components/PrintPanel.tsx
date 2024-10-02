@@ -1,8 +1,10 @@
-import { Box, Button, Divider, Chip, Drawer, List, Paper, Stack, Typography, Tooltip } from '@mui/material';
+import { Box, Button, Divider, Chip, Drawer, List, Paper, Stack, Typography, Tooltip, Backdrop } from '@mui/material';
 import { useContext, useState } from 'react';
 import { PoemContext } from './PoemContext';
 import PrintListItem from './PrintListItem';
 import Loading from './Loading';
+import TutorialAnimatedBorder from './Tutorial/TutorialAnimatedBorder';
+import FinishDialog from './Tutorial/FinishDialog';
 
 type PrintBarProps = {
   print: boolean;
@@ -17,6 +19,7 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [showPrintPopOver, setShowPrintPopOver] = useState(false);
   const [hasClickedGenerate, setHasClickedGenerate] = useState(false);
+  const [showFinishTutorial, setShowFinishTutorial] = useState(false);
 
   const selectAll = () => {
     setChecked(uniqueSimilarPoemsList.map((poem) => poem.id as number));
@@ -39,10 +42,13 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   };
 
   const handleGenerate = async () => {
-    localStorage.setItem('showTutorial', 'false');
-    setShowTutorial(false);
-    setHasClickedGenerate(true);
-    setTimeout( () => setShowPrintPopOver(false), 1000) ;
+    if (showTutorial) {
+      localStorage.setItem('showTutorial', 'false');
+      setShowTutorial(false);
+      setShowFinishTutorial(true);
+      setHasClickedGenerate(true);
+      setTimeout(() => setShowPrintPopOver(false), 1000);
+    }
     setLoading(true);
     try {
       const response = await fetch(`${apiUrl}/api/poems/print`, {
@@ -89,7 +95,15 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
   };
 
   return (
-    <Drawer onTransitionEnd={handleDrawerOpen} onTransitionEnter={() => setShowPrintPopOver(false)} anchor="right" open={print} onClose={() => setPrint(!print)}>
+    <Drawer
+      onTransitionEnd={handleDrawerOpen}
+      onTransitionEnter={() => setShowPrintPopOver(false)}
+      anchor="right"
+      open={print}
+      onClose={() => setPrint(!print)}
+    >
+      <Backdrop sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })} open={showPrintPopOver}></Backdrop>
+
       <Box height="100%" p={5}>
         <Paper elevation={3} sx={{ p: 3 }}>
           <Typography display="block" mx="auto" fontWeight={700} fontFamily="Merriweather" variant="overline" fontSize={20} align="center">
@@ -102,26 +116,28 @@ export default function PrintPanel({ print, setPrint }: PrintBarProps) {
           </Stack>
           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {uniqueSimilarPoemsList.map((poem: Poem) => {
-              return <PrintListItem key={poem.id} checked={checked} poem={poem} handleToggle={handleToggle} />;
+              return <PrintListItem key={poem.id} checked={checked} poem={poem} handleToggle={handleToggle} showTutorial={showPrintPopOver} />;
             })}
           </List>
         </Paper>
         <Tooltip title="Genera un archivo de texto con los poemas seleccionados" arrow open={showPrintPopOver}>
-        <Button
-          disabled={checked.length == 0}
-          onClick={handleGenerate}
-          variant="contained"
-          color="error"
-          sx={{ display: 'block', mx: 'auto', my: 3 }}
-        >
-          <Typography fontWeight={700}>CREAR</Typography>
-        </Button>
+          <Button
+            disabled={showPrintPopOver ? false : checked.length == 0}
+            onClick={handleGenerate}
+            variant="contained"
+            color="error"
+            sx={{ display: 'block', mx: 'auto', my: 3, zIndex: showPrintPopOver ? 9999 : 0 }}
+          >
+            <Typography fontWeight={700}>CREAR</Typography>
+            {showPrintPopOver && <TutorialAnimatedBorder />}
+          </Button>
         </Tooltip>
       </Box>
       <Button component="div" color="info" onClick={() => setPrint(false)} sx={{ py: 3 }}>
         Cerrar
       </Button>
       <Loading open={loading} />
+      <FinishDialog show={showFinishTutorial} setShow={setShowFinishTutorial} />
     </Drawer>
   );
 }
