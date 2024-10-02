@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Poem, PoemSubCorpus
+from .models import Poem, PoemSubCorpus, PoemCorpus
 
 class PoemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,4 +9,9 @@ class PoemSerializer(serializers.ModelSerializer):
 class PoemSubCorpusSerializer(serializers.ModelSerializer):
     class Meta:
         model = PoemSubCorpus
+        fields = ('id', 'slug', 'title', 'author', 'content', 'similars', 'keywords')
+
+class PoemCorpusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PoemCorpus
         fields = ('id', 'slug', 'title', 'author', 'content', 'similars', 'keywords')
