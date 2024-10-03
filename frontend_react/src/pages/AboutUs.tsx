@@ -5,7 +5,7 @@ import {motion} from 'framer-motion';
 const bioVargas =
   'Programador, literato, músico y ciclista. Magíster en Edición (UDP), licenciado en Letras con mención en Literatura y Lingüística Hispánicas y Minor en Historia de la Música (PUC). Desde que inició la pandemia, decidí reinventarme. Actualmente soy Desarrollador Web Fullstack JavaScript y Python. Muy apasionado, también, con todo lo que sea el Desarrollo de Videojuegos y la Domótica. Siempre busco continuar aprendiendo más.';
 const bioMora = 
-  'Lingüista computacional y profesor de Lengua y Literatura. Mi interés principal es aplicar modelos y técnicas del Procesamiento del Lenguaje Natural (NLP) para fines educativos, además de proyectos más lúdicos en el Desarrollo de Videojuegos para el aprendizaje de segundas lenguas. Magíster en NLP (Universidad de Edimburgo) y licencia en Letras Hispánicas (PUC).';
+  'Lingüista computacional y profesor de Lengua y Literatura. Mi interés principal es aplicar modelos y técnicas del Procesamiento del Lenguaje Natural (NLP) para fines educativos, además de proyectos más lúdicos en el Desarrollo de Videojuegos para el aprendizaje de segundas lenguas. Magíster en NLP (Universidad de Edimburgo) y licenciado en Letras Hispánicas (PUC).';
 const bioEspallargas = 
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque velit optio corrupti ullam adipisci, iste beatae magnam! Reiciendis, vero. Ratione similique optio eligendi veniam perspiciatis necessitatibus exercitationem rem numquam voluptates?';
 export default function AboutUs() {
