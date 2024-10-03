@@ -12,18 +12,19 @@ export default function AboutUs() {
   return (
     <Container sx={{ my: 4 }}>
       <Typography variant="h1" fontSize="3rem" align="center" fontFamily="Merriweather" fontWeight={800}>
-        QUIÉNES SOMOS
+        ÉcoPoético
       </Typography>
       <Paper elevation={6} variant="elevation" square={false} sx={{ p: 3, my: 4, background: 'primary' }}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque velit optio corrupti ullam adipisci, iste beatae magnam! Reiciendis, vero.
-        Ratione similique optio eligendi veniam perspiciatis necessitatibus exercitationem rem numquam voluptates?
+      El uso creciente de plataformas digitales para la lectura plantea interrogantes sobre quién cumple el rol de mediador de lectura. 
+      Educadores y libreros han realizado tradicionalmente el andamiaje de lectura. 
+      En el espacio digital, no obstante, esta figura se torna borrosa y de contornos difusos.
       </Paper>
       <Paper elevation={6} variant="elevation" square={false} sx={{ p: 3, my: 4, background: 'primary' }}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque velit optio corrupti ullam adipisci, iste beatae magnam! Reiciendis, vero.
-        Ratione similique optio eligendi veniam perspiciatis necessitatibus exercitationem rem numquam voluptates?
+      ÉcoPoético es una herramienta enfocada en la recomendación de poemas. 
+      Por medio del uso del Aprendizaje Automatizado y Procesamiento del Lenguaje Natural, cada poema permite viajar hacia los poemas más similares en contenido semántico.
       </Paper>
-      <Typography variant="h2" py={3} fontSize="2.2rem" align="center" fontFamily="Roboto" fontWeight={800}>
-        Nuestro Equipo
+      <Typography variant="h2" py={3} fontSize="2.2rem" align="center" fontFamily="Merriweather" fontWeight={800}>
+        Equipo
       </Typography>
       <motion.div initial={{ opacity: 0, translateY: 50 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 0.5, duration: 1.25 }}>
       <Grid container spacing={3} justifyContent="center">
