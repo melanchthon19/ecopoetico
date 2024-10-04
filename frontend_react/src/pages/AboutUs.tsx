@@ -7,7 +7,7 @@ const bioVargas =
 const bioMora = 
   'Lingüista computacional y profesor de Lengua y Literatura. Mi interés principal es aplicar modelos y técnicas del Procesamiento del Lenguaje Natural (NLP) para fines educativos, además de proyectos más lúdicos en el Desarrollo de Videojuegos para el aprendizaje de segundas lenguas. Magíster en NLP (Universidad de Edimburgo) y licenciado en Letras Hispánicas (PUC).';
 const bioEspallargas = 
-  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque velit optio corrupti ullam adipisci, iste beatae magnam! Reiciendis, vero. Ratione similique optio eligendi veniam perspiciatis necessitatibus exercitationem rem numquam voluptates?';
+  'Educadora de Párvulos (PUC), estudiante de Doctorado del Departamento de Didáctica de la Lengua, Literatura y Ciencias Sociales de la Universidad Autónoma de Barcelona y Máster en Literatura Infantil, Medios de Comunicación y Cultura de la Universidad de Glasgow. Soy miembro del Grupo de Investigación Gretel donde desarrollo mi tesis sobre la incorporación de narrativas digitales en la educación literaria para estudiantes de secundaria.';
 export default function AboutUs() {
   return (
     <Container sx={{ my: 4 }}>
@@ -28,9 +28,9 @@ export default function AboutUs() {
       </Typography>
       <motion.div initial={{ opacity: 0, translateY: 50 }} animate={{ opacity: 1, translateY: 0 }} transition={{ delay: 0.5, duration: 1.25 }}>
       <Grid container spacing={3} justifyContent="center" alignItems='stretch'>
-        <AboutUsCard name="Daniel Mora" image="foto-daniel-mora.jpeg" description={bioMora} />
+        <AboutUsCard name="Daniel Mora" image="foto-daniel-mora-copy.jpeg" description={bioMora} />
         <AboutUsCard name="Francisco Vargas" image="vargas.jpeg" description={bioVargas} />
-        <AboutUsCard name="Loreto Espallargas" image="vargas.jpeg" description={bioEspallargas} />
+        <AboutUsCard name="Loreto Espallargas" image="toty-espallargas.jpeg" description={bioEspallargas} />
       </Grid>
       </motion.div>
     </Container>
