@@ -9,7 +9,7 @@ interface AboutUsCardProps {
 export default function AboutUsCard({ name, image, description }: AboutUsCardProps) {
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Card raised={true} sx={{ maxWidth: 345, mx: 'auto' }}>
+      <Card raised={true} sx={{ maxWidth: 345, mx: 'auto', height: '100%' }}>
         <CardMedia
           component="img"
           height="120"
