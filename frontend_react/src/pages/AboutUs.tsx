@@ -33,6 +33,18 @@ export default function AboutUs() {
         <AboutUsCard name="Loreto Espallargas" image="toty-espallargas.jpeg" description={bioEspallargas} />
       </Grid>
       </motion.div>
+      
+      <footer style={{ marginTop: '2rem', padding: '1rem', textAlign: 'center' }}>
+        <Typography variant="body2" color="textSecondary">
+          2024 ÉcoPoético.
+          <br/>
+          Plataforma de uso educativo.
+          <br/>
+          <a href="mailto:contacto@ecopoetico.cl" style={{ color: '#007BFF', textDecoration: 'none' }}>contacto@ecopoetico.cl</a>
+        </Typography>
+      </footer>
+
+
     </Container>
   );
 }
