@@ -22,7 +22,7 @@ export default function PoemCard({ poem, scroll }: PoemCardProps) {
   const { musicStarted } = useContext(PoemContext) as PoemContextType;
 
   useLayoutEffect(() => {
-    const keywords = poem.keywords ? poem.keywords.split(' ') : null;
+    const keywords = poem.keywords ? poem.keywords.split('-') : null;
     const verses = poem.content
       .trim()
       .split(/\n+/)
