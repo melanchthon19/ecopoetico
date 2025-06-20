@@ -12,7 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-from .appenv import secret_key, debug
+try:
+    from .appenv import secret_key, debug
+except ModuleNotFoundError:
+    print('Module .appenv not found!\nSetting "secret_key" manually and "debug=True"')
+    secret_key = 'jgierocsmd320752389@#!)/%($fewuic239847'
+    debug = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
