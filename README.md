@@ -10,11 +10,9 @@ Visit the platform: [https://www.ecopoetico.cl](https://www.ecopoetico.cl)
 
 The growing use of digital platforms for reading raises questions about who fulfills the role of reading mediator. Educators and booksellers have traditionally provided the scaffolding for reading. In the digital space, however, this figure becomes blurred and indistinct.
 
-EcoPoetico is a tool focused on the recommendation of poems. Through the use of Natural Language Processing, each poem allows for a journey toward others that are most similar in semantic content.
+`EcoPoetico` is a tool focused on the recommendation of poems. Through the use of Natural Language Processing, each poem allows for a journey toward others that are most similar in semantic content.
 
 ## 🚀 Setup Instructions
-
-Clone the repo and install dependencies:
 
 ```bash
 # clone the repo
@@ -45,18 +43,18 @@ Follow the instructions in `ecopoetico/process_corpus/` in order to create recom
 The expected structure of your folder `corpus` inside `process_corpus` is:
 ```
 .corpus/
-├── Emily_Dickinson/
-│   ├── I_Heard_a_Fly_Buzz_When_I_Died.txt
-│   └── Hope_is_the_Thing_with_Feathers.txt
-├── Pablo_Neruda/
-│   ├── If_You_Forget_Me.txt
-│   └── Tonight_I_Can_Write.txt
-├── Rainer_Maria_Rilke/
-│   ├── The_Panther.txt
-│   └── Autumn_Day.txt
+├── author-1/
+│   ├── title-poem-1.txt
+│   └── title-poem-2.txt
+├── author-2/
+│   ├── title-poem-1.txt
+│   └── title-poem-2.txt
+├── author-3/
+│   ├── title-poem-1.txt
+│   └── title-poem-2.txt
 ```
 
-Remember to adjust the model for feature extraction in the file `ecopoetico/process_corpus/extract_features.py` in the `main` function.
+Remember to adjust the model for feature extraction in the `main` function of the file `ecopoetico/process_corpus/extract_features.py`.
 
 ## 🙌 Citation
 
