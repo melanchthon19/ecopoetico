@@ -16,7 +16,10 @@ try:
     from .appenv import secret_key, debug
 except ModuleNotFoundError:
     print('Module .appenv not found!\nSetting "secret_key" manually and "debug=True"')
-    secret_key = 'jgierocsmd320752389@#!)/%($fewuic239847'
+    import random
+    import string
+    characters = string.ascii_letters + string.digits + string.punctuation
+    secret_key = ''.join(random.choice(characters) for _ in range(32))
     debug = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

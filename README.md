@@ -82,6 +82,6 @@ isbn="978-3-031-93564-0"
 ```
 
 ## 📬 Chit-Chat
-Feel free to open an issue if you have any questions, collaborative ideas, or just looking for Digital Literary Mediation chit-chat :)
+Feel free to open an issue if you have any questions, collaborative ideas, looking for Digital Literary Mediation chit-chat, or just drop us a line at `contacto@ecopoetico.cl`.
 
 
