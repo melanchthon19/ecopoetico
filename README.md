@@ -26,7 +26,18 @@ source venv/bin/activate
 # install dependencies (django...)
 pip install -r requirements.txt
 
+# lets use a small corpus for testing
+cd process_corpus
+# extract feaures from small corpus
+# and compute recommendation matrix
+./process_corpus.sh
+cd ..
+
+# upload recommendations to database
+python manage.py upload_poems
+
 # collect static
+# make sure npm is installed
 ./build.sh -local
 
 # django database schema

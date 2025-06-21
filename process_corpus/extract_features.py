@@ -9,7 +9,7 @@ error_log_file = 'error_log_extract_features.txt'
 # Function to load the model and tokenizer in a modular way
 def load_model_and_tokenizer(model_name='dccuchile/bert-base-spanish-wwm-uncased'):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name)
+    model = AutoModel.from_pretrained(model_name, trust_remote_code=True, use_safetensors=True)
     return tokenizer, model
 
 # Function to log errors to a file

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'betopoem',
     'process_corpus',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
